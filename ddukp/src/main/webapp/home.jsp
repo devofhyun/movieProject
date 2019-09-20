@@ -7,7 +7,7 @@
 <body>
 <script type="text/javascript">
 window.location.href="main.do"
-/* 지영언니 */
+/* 지영언니 test */
 </script>
 </body>
 </html>
