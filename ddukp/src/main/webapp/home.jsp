@@ -7,7 +7,7 @@
 <body>
 <script type="text/javascript">
 window.location.href="main.do"
-/* 지영언니 commit test! */
+/* 지영언니 commit test!! */
 </script>
 </body>
 </html>
