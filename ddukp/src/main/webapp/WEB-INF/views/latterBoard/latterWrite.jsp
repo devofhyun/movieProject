@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,7 +9,7 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>후기게시판 글쓰기</title>
 
-
+<script src="./resources/ckeditor/ckeditor.js"></script>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
 	type="text/css">
@@ -97,15 +97,18 @@
 
 							<textarea name="leditor" id="leditor" rows="10" cols="10"
 								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
-
+							<script type="text/javascript">
+								
+									CKEDITOR.replace('leditor');
+								
+							</script>
 						</div>
 						<div class="col-md-12">
 							<input type="file" class="" id="">
 						</div>
-						<div class="col-md-12" style="padding-top:30px">
-							<a href="latterList.do" class="btn btn-common pull-left">목록</a>
-
-							<a href="latterList.do" class="btn btn-common pull-right">등록</a>
+						<div class="col-md-12" style="padding-top: 30px">
+							<a href="latterList.do" class="btn btn-common pull-left">목록</a> <a
+								href="latterList.do" class="btn btn-common pull-right">등록</a>
 						</div>
 					</form>
 
@@ -125,14 +128,18 @@
 	<script type="text/javascript" src="./assets/js/owl.carousel.min.js"></script>
 	<script type="text/javascript" src="./assets/js/jquery.slicknav.js"></script>
 	<script type="text/javascript" src="./assets/js/main.js"></script>
-	<script type="text/javascript"src="./assets/js/jquery.counterup.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/jquery.counterup.min.js"></script>
 	<script type="text/javascript" src="./assets/js/waypoints.min.js"></script>
 	<script type="text/javascript" src="./assets/js/jasny-bootstrap.min.js"></script>
-	<script type="text/javascript"src="./assets/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="./assets/js/form-validator.min.js"></script>
 	<script type="text/javascript" src="./assets/js/contact-form-script.js"></script>
-	<script type="text/javascript"src="./assets/js/jquery.themepunch.revolution.min.js"></script>
-	<script type="text/javascript"src="./assets/js/jquery.themepunch.tools.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/jquery.themepunch.revolution.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/jquery.themepunch.tools.min.js"></script>
 </body>
 <script type="text/javascript">
 	$(document).ready(function() {

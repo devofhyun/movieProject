@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,21 +48,6 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
-<script type="text/javascript">
-$(document).ready(function{
-	$('#logBtn').on('click', function(){
-		if($("#id").val()==''){
-			alert('아이디를 입력하셔야 합니다.');
-			return false;
-		}
-		if($("#pwd").val()==''){
-			alert('비밀번호를 입력하셔야 합니다.');
-			return false;
-		}
-		$("#logBtn").submit();
-	});
-});
-</script>
 </head>
 <body>
 	<!-- Header Section Start -->
@@ -105,20 +89,20 @@ $(document).ready(function{
 
 						<div id="cd-login" class="is-selected">
 							<div class="page-login-form">
-								<form role="form" class="login-form" action="login_ok.do" method="post">
+								<form role="form" class="login-form">
 									<div class="form-group">
 										<div class="input-icon">
-											<i class="ti-user"></i> <input type="text" id="id"
-												class="form-control" name="id" placeholder="아이디">
+											<i class="ti-user"></i> <input type="text" id="sender-email"
+												class="form-control" name="email" placeholder="아이디">
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="input-icon">
-											<i class="ti-lock"></i> <input type="password" id="pwd"
-												class="form-control" name="pwd" placeholder="비밀번호">
+											<i class="ti-lock"></i> <input type="password"
+												class="form-control" placeholder="비밀번호">
 										</div>
 									</div>
-									<button id="logBtn" class="btn btn-common log-btn">로그인 하기</button>
+									<button class="btn btn-common log-btn">로그인 하기</button>
 									<div class="checkbox-item">
 										<p class="cd-form-bottom-message">
 											<a href="findPwd.do">비밀번호 찾기</a>
