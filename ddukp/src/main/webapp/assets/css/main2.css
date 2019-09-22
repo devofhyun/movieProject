@@ -202,7 +202,7 @@ a:focus {
   color: #fff;
 }
 .section {
-  padding: 60px 0;
+  /* padding: 30px 0; */
 }
 .section-title {
   font-size: 36px;
@@ -1248,6 +1248,7 @@ label {
   background: #fff;
   width: 100%;
   padding: 8px;
+  text-align: center;
 }
 .featured-jobs .item-thumb {
   position: relative;
@@ -1399,9 +1400,9 @@ label {
    ========================================================================== */
 #testimonial {
   width: 100%;
-  /*background: url(../img/testimonial/testimonial-bg.jpg);*/
   background-size: cover;
   position: relative;
+  background-color: #fff;
 }
 #testimonial:before {
   position: absolute;
@@ -1460,7 +1461,7 @@ label {
 }
 .touch-slider .owl-controls .owl-buttons {
   position: relative;
-  top: -190px;
+  top: -200px;
   left: 0;
 }
 .touch-slider .owl-controls .owl-buttons div.owl-prev {
@@ -3614,3 +3615,15 @@ span#lwrite{
 #moviecategory{
 	text-align:center; 
 }
+.main-slider {
+	margin-top: 20px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	height: 300px;
+	/* opacity: 0.8; */
+}
+/*
+.main-slider:hover {
+	opacity: 1;
+}
+*/
