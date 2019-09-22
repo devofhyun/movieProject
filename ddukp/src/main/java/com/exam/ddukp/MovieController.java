@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.exam.model2.Action;
+import com.exam.action.Action;
+import com.exam.action.LoginOkAction;
 
 /**
  * Handles requests for the application home page.
@@ -42,19 +44,6 @@ public class MovieController {
 		return modelAndView;
 	}
 
-	@RequestMapping(value = "/login.do")
-	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./login/login");
-		return modelAndView;
-	}
-
-	@RequestMapping(value = "/register.do")
-	public ModelAndView register(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./login/register");
-		return modelAndView;
-	}
 
 	@RequestMapping(value = "/findPwd.do")
 	public ModelAndView findPwd(HttpServletRequest request, HttpServletResponse response) {

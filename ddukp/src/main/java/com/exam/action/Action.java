@@ -1,4 +1,4 @@
-package com.exam.model2;
+package com.exam.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
