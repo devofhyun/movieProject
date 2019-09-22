@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.exam.action.Action;
-import com.exam.action.LoginOkAction;
+/* import com.exam.action.LoginOkAction;*/
 
 /**
  * Handles requests for the application home page.
