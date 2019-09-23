@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%  %>
+
          <div class="logo-menu">
           <nav class="navbar navbar-default main-navigation" role="navigation" data-spy="affix" data-offset-top="50">
             <div class="container">
@@ -80,8 +79,7 @@
                       </li>
                     </ul>
                   </li>
-                  <c:if test ="${!empty sid }">
-                                    <li>
+                  <li>
                     <a href="memberInfo.do">
                     마이페이지 <i class="fa fa-angle-down"></i>
                     </a>
@@ -101,11 +99,9 @@
 
                     </ul>
                   </li>
-                  </c:if>
-
                   <li>
                     <a href="userDelete.do">
-                    관리자 <i class="fa fa-angle-down"></i>
+                    관리자페이지 <i class="fa fa-angle-down"></i>
                     </a>
                     <ul class="dropdown">
                       <li>
@@ -114,16 +110,10 @@
                         </a>
                       </li>
                     </ul>
-                  </li>
-                                      
+                  </li>                    
                 </ul>
                 <ul class="nav navbar-nav navbar-right float-right">
-                   <c:if test="${empty sid }">
                   <li class="right"><a href="login.do"><i class="ti-lock"></i>  로그인</a></li>
-                  </c:if>
-                   <c:if test="${!empty sid }">
-                  <li class="right"><a href="logout_ok.do"><i class="ti-lock"></i>로그아웃</a></li>
-                  </c:if>
                 </ul>
               </div>
             </div>
