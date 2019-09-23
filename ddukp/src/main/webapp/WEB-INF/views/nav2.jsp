@@ -66,7 +66,7 @@
 								로그인</a></li>
 					</c:if>
 					<c:if test="${!empty sid }">
-						<li class="right"><a href="logout_ok.do"><i
+						<li class="right"><p>${sid }</p><a href="logout_ok.do"><i
 								class="ti-lock"></i>로그아웃</a></li>
 					</c:if>
 				</ul>

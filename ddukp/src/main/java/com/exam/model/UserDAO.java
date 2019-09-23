@@ -62,4 +62,38 @@ public class UserDAO {
 		}
 		return flag;
 	}
+	
+	public UserTO userView(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserTO to = new UserTO();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select uid, upwd, uemail, ubirth, uphone from member where uid = ?";
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			System.out.println(id);
+			if(rs.next()) {
+				to.setUid(rs.getString("uid"));
+				to.setUbirth(rs.getString("ubirth"));
+				to.setUemail(rs.getString("uemail"));
+				to.setUphone(rs.getString("uphone"));
+				to.setUpwd(rs.getString("upwd"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		
+		return to;
+	}
 }

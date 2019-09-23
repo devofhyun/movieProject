@@ -89,7 +89,7 @@
 
 						<div id="cd-login" class="is-selected">
 							<div class="page-login-form">
-								<form role="form" class="login-form" action="login_ok.do">
+								<form role="form" class="login-form" action="login_ok.do" method="post">
 									<div class="form-group">
 										<div class="input-icon">
 											<i class="ti-user"></i> <input type="text" id="id"

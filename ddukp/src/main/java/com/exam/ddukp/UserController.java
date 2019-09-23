@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.exam.action.Action;
 import com.exam.action.LoginAction;
 import com.exam.action.LoginOkAction;
+import com.exam.action.UserViewAction;
 
 /**
  * Handles requests for the application home page.
@@ -73,6 +74,7 @@ public class UserController {
 	public ModelAndView register(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("./login/register");
+	
 		return modelAndView;
 	}
 
@@ -93,6 +95,8 @@ public class UserController {
 	@RequestMapping(value = "/memberInfo.do")
 	public ModelAndView memberInfo(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
+		userAction = new UserViewAction();
+		userAction.execute(request, response);
 		modelAndView.setViewName("./mypage/memberInfo");
 		return modelAndView;
 	}

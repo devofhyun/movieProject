@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,23 +85,23 @@
 						<form class="form-ad">
 							<div class="form-group">
 								<label class="control-label">아이디</label> <input
-									type="text" class="form-control" placeholder="hongildong" readonly="readonly">
+									type="text" class="form-control" value="${to.uid }" readonly="readonly">
 							</div>
-							<div class="form-group">
+<%-- 							<div class="form-group">
 								<label class="control-label">이름</label> <input
-									type="text" class="form-control" placeholder="홍길동" readonly="readonly">
-							</div>			
+									type="text" class="form-control" value="${to.uname }" readonly="readonly">
+							</div>	 --%>		
 							<div class="form-group">
 								<label class="control-label">생년월일 </label>
-								<input type="text" class="form-control" placeholder="yyyy-mm-dd" readonly="readonly">
+								<input type="text" class="form-control" value="${to.ubirth }" readonly="readonly">
 							</div>	
 							<div class="form-group">
 								<label class="control-label">이메일 </label>
-								<input type="text" class="form-control" placeholder="honggildong@email.com" readonly="readonly">
+								<input type="text" class="form-control" value="${to.uemail }" readonly="readonly">
 							</div>			
 							<div class="form-group">
 								<label class="control-label">전화번호 </label>
-								<input type="text" class="form-control" placeholder="010-1234-1234" readonly="readonly">
+								<input type="text" class="form-control" value="${to.uphone }" readonly="readonly">
 							</div>											
 							<div>	
 							<a href="memberDelete.do" class="btn btn-common pull-left">탈퇴하기</a>
