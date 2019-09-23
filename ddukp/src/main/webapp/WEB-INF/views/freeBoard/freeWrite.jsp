@@ -7,7 +7,14 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
-
+<script type="text/javascript" src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/ckeditor/ckeditor.js"></script>
+<!-- <script type="text/javascript">
+$(document).ready(function(){
+	CKEDITOR.replace('leditor');
+});
+	
+</script> -->
 <!-- editor -->
 <script type="text/javascript"
 	src="./editor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
@@ -100,22 +107,23 @@
 
 						<div class="col-md-9 form-group is-empty">
 							<label for="moviegenre">제목</label> <input type="text"
-								class="form-control" placeholder="제목">
+								class="form-control" placeholder="제목" id="subject">
 						</div>
 						<div class="col-md-12 form-group">
 							<label for="moviegenre">내용</label>
 
 							<textarea name="leditor" id="leditor" rows="10" cols="10"
 								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
-
+							<script type="text/javascript">
+								CKEDITOR.replace('leditor');
+							</script>
 						</div>
 						<div class="col-md-12">
 							<input type="file" class="" id="">
 						</div>
-						<div class="col-md-12" style="padding-top:30px">
-							<a href="freeList.do" class="btn btn-common pull-left">목록</a>
-
-							<a href="freeList.do" class="btn btn-common pull-right">등록</a>
+						<div class="col-md-12" style="padding-top: 30px">
+							<a href="freeList.do" class="btn btn-common pull-left">목록</a> <a
+								href="freeList.do" class="btn btn-common pull-right">등록</a>
 						</div>
 					</form>
 

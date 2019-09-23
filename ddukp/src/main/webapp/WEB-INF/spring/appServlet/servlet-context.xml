@@ -23,6 +23,6 @@
 	
 	<context:component-scan base-package="com.exam.*" />
 	
-	
+
 	
 </beans:beans>
