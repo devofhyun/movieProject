@@ -48,7 +48,6 @@ public class UserController {
 		HttpSession session = request.getSession();
 		session.setAttribute("sid", request.getParameter("id"));
 
-		userAction.execute(request, response);
 
 		if (session != null) {
 			modelAndView.setViewName("main");
@@ -56,6 +55,8 @@ public class UserController {
 			modelAndView.setViewName("./login/login");
 			System.out.println("sid : " + request.getParameter("id"));
 		}
+		userAction.execute(request, response);
+
 		return modelAndView;
 	}
 
