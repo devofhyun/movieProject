@@ -55,6 +55,7 @@ public class UserController {
 			modelAndView.setViewName("./login/login");
 			System.out.println("sid : " + request.getParameter("id"));
 		}
+		
 		userAction.execute(request, response);
 
 		return modelAndView;
