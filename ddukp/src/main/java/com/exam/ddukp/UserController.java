@@ -44,19 +44,24 @@ public class UserController {
 	@RequestMapping(value = "/login_ok.do")
 	public ModelAndView login_ok(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
-
+		
 		userAction = new LoginOkAction();
-		HttpSession session = request.getSession();
-		session.setAttribute("sid", request.getParameter("id"));
-
 		userAction.execute(request, response);
+		int flag = (Integer) request.getAttribute("flag");
 
-		if (session != null) {
+		HttpSession session = request.getSession();
+
+		System.out.println("컨트롤러 플래그 : " + request.getAttribute("flag"));
+
+		if (request.getAttribute("flag").equals(0)) {
+			session.setAttribute("sid", request.getParameter("id"));
 			modelAndView.setViewName("main");
+
 		} else {
 			modelAndView.setViewName("./login/login");
 			System.out.println("sid : " + request.getParameter("id"));
 		}
+
 		return modelAndView;
 	}
 

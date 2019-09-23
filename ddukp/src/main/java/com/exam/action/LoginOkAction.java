@@ -22,7 +22,8 @@ public class LoginOkAction implements Action {
 		
 		UserDAO dao = new UserDAO();
 		
-		int flag = dao.LoginOk(to);
+		int flag = 1;
+		flag = dao.LoginOk(to);
 		System.out.println("액션플래그: " + flag);
 		
 		request.setAttribute("flag", flag);
