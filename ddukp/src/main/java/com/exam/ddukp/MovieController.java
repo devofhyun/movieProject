@@ -41,6 +41,85 @@ public class MovieController {
 		modelAndView.setViewName("introduceMoviep");
 		return modelAndView;
 	}
+<<<<<<< HEAD
+=======
+
+	@RequestMapping(value = "/login.do")
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./login/login");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/register.do")
+	public ModelAndView register(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./login/register");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/findPwd.do")
+	public ModelAndView findPwd(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./login/findPwd");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/findId.do")
+	public ModelAndView findId(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./login/findId");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/memberInfo.do")
+	public ModelAndView memberInfo(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./mypage/memberInfo");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/memberEdit.do")
+	public ModelAndView memberEdit(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./mypage/memberEdit");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/memberDelete.do")
+	public ModelAndView memberDelete(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./mypage/memberDelete");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/memberWrite.do")
+	public ModelAndView memberWrite(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./mypage/memberWrite");
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "/memberScrap.do")
+	public ModelAndView memberScrap(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./mypage/memberScrap");
+		return modelAndView;
+	}
+	@RequestMapping(value = "/changePwd.do")
+	public ModelAndView changePwd(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./mypage/changePwd");
+		return modelAndView;
+	}
+	@RequestMapping(value = "/userDelete.do")
+	public ModelAndView userDelete(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("./admin/userDelete");
+		return modelAndView;
+	}
+
+>>>>>>> refs/remotes/origin/master
 	@RequestMapping(value = "/customerCenter.do")
 	public ModelAndView customerCenter(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();

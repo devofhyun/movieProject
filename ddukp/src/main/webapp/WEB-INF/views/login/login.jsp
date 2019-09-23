@@ -89,16 +89,24 @@
 
 						<div id="cd-login" class="is-selected">
 							<div class="page-login-form">
+<<<<<<< HEAD
 								<form role="form" class="login-form" action="login_ok.do">
+=======
+								<form role="form" class="login-form">
+>>>>>>> refs/remotes/origin/master
 									<div class="form-group">
 										<div class="input-icon">
-											<i class="ti-user"></i> <input type="text" id="id"
-												class="form-control" name="id" placeholder="아이디">
+											<i class="ti-user"></i> <input type="text" id="sender-email"
+												class="form-control" name="email" placeholder="아이디">
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="input-icon">
+<<<<<<< HEAD
 											<i class="ti-lock"></i> <input type="password" id="pwd" name="pwd"
+=======
+											<i class="ti-lock"></i> <input type="password"
+>>>>>>> refs/remotes/origin/master
 												class="form-control" placeholder="비밀번호">
 										</div>
 									</div>
