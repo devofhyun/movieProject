@@ -43,22 +43,26 @@
 							<li><a href="infoBoard.do"> 공지사항 </a></li>
 							<li><a href="customerCenter.do"> 고객센터 </a></li>
 						</ul></li>
-					<li><a href="memberInfo.do"> 마이페이지 <i
-							class="fa fa-angle-down"></i>
-					</a>
-						<ul class="dropdown">
-							<li><a href="memberInfo.do"> 나의 정보 </a></li>
-							<li><a href="memberScrap.do"> 스크랩 목록 </a></li>
-							<li><a href="memberWrite.do">내가 글 쓴 목록</a></li>
-							<li><a href="changePwd.do">비밀번호 변경</a></li>
+					<c:if test="${!empty sid && sid != 'adminmoviep'}">
+						<li><a href="memberInfo.do"> 마이페이지 <i
+								class="fa fa-angle-down"></i>
+						</a>
+							<ul class="dropdown">
+								<li><a href="memberInfo.do"> 나의 정보 </a></li>
+								<li><a href="memberScrap.do"> 스크랩 목록 </a></li>
+								<li><a href="memberWrite.do">내가 글 쓴 목록</a></li>
+								<li><a href="changePwd.do">비밀번호 변경</a></li>
 
-						</ul></li>
-					<li><a href="userDelete.do"> 관리자페이지 <i
-							class="fa fa-angle-down"></i>
-					</a>
-						<ul class="dropdown">
-							<li><a href="userDelete.do"> 회원 관리 </a></li>
-						</ul></li>
+							</ul></li>
+					</c:if>
+					<c:if test="${!empty sid && sid == 'adminmoviep'}">
+						<li><a href="userDelete.do"> 관리자페이지 <i
+								class="fa fa-angle-down"></i>
+						</a>
+							<ul class="dropdown">
+								<li><a href="userDelete.do"> 회원 관리 </a></li>
+							</ul></li>
+					</c:if>
 				</ul>
 				<ul class="nav navbar-nav navbar-right float-right">
 					<c:if test="${empty sid }">
@@ -66,7 +70,7 @@
 								로그인</a></li>
 					</c:if>
 					<c:if test="${!empty sid }">
-						<li class="right"><p>${sid }</p><a href="logout_ok.do"><i
+						<li class="right"><a href="logout_ok.do"><i
 								class="ti-lock"></i>로그아웃</a></li>
 					</c:if>
 				</ul>

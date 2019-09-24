@@ -161,16 +161,5 @@
 	<script type="text/javascript"src="./assets/js/jquery.themepunch.revolution.min.js"></script>
 	<script type="text/javascript"src="./assets/js/jquery.themepunch.tools.min.js"></script>
 </body>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var oEditors = [];
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef : oEditors,
-			elPlaceHolder : "leditor",
-			sSkinURI : "./editor/SmartEditor2Skin.html",
-			fCreator : "createSEditor2"
-		});
 
-	});
-</script>
 </html>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,20 +87,19 @@
 							<div class="row">
 								<div class="col-md-2 col-xs-4">
 									<div class="search-category-container1">
-										<select
-											class="dropdown-product selectpicker">
-												<option selected="selected">---------</option>
-												<option>아이디</option>
-												<option>이름</option>
+										<select class="dropdown-product selectpicker">
+											<option selected="selected">---------</option>
+											<option>아이디</option>
+											<option>이름</option>
 										</select>
-									
+
 									</div>
 								</div>
 								<div class="col-md-4 col-xs-6">
 									<div class="form-group">
 										<input class="form-control" type="text"
 											placeholder="job title / keywords / company name">
-			 						</div>
+									</div>
 								</div>
 								<div class="col-md-1 col-xs-1">
 									<button type="button" class="btn btn-search-icon">
@@ -125,25 +125,27 @@
 							</div>
 						</div>
 						<div class="alerts-content">
-							<div class="row">
-								<a href="columnView.do">
-									<div class="col-md-3 col-xs-3">
-										<p>Web Designer</p>
+							<c:forEach items="${udListTO.userLists }" var="to">
+								<div class="row">
+									<a href="columnView.do">
+										<div class="col-md-3 col-xs-3">
+											<p>${to.uid}</p>
+										</div>
+										<div class="col-md-3 col-xs-3">
+											<p>Web Designer</p>
+										</div>
+										<div class="col-md-3 col-xs-3">
+											<a class="btn btn-common2">탈퇴</a>
+										</div>
+									</a>
+									<div class="checkbox col-md-3">
+										<label class="rememberme"> <input name="rememberme"
+											id="rememberme" value="forever" type="checkbox">
+										</label>
 									</div>
-									<div class="col-md-3 col-xs-3">
-										<p>Web Designer</p>
-									</div>
-									<div class="col-md-3 col-xs-3">
-										<a class="btn btn-common2">탈퇴</a>
-									</div>
-								</a>
-								<div class="checkbox col-md-3">
-									<label class="rememberme"> <input name="rememberme"
-										id="rememberme" value="forever" type="checkbox">
-									</label>
-								</div>
 
-							</div>
+								</div>
+							</c:forEach>
 						</div>
 
 
@@ -152,18 +154,36 @@
 					<div class="" style="padding: 20px">
 						<a href="userDelete.do" class="btn btn-common pull-right">삭제</a>
 					</div>
+
+
+
 					<div style="text-align: center; padding-top: 50px">
 						<ul class="pagination">
-							<li class="active"><a href="#" class="btn btn-common"><i
-									class="ti-angle-left"></i> </a></li>
-							<li><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li class="active"><a href="#" class="btn btn-common"> <i
-									class="ti-angle-right"></i>
-							</a></li>
+							<c:if test="${udListTO.startBlock == 1 }">
+								<li class="active"><a href="#" class="btn btn-common"><i
+										class="ti-angle-left"></i> </a></li>
+							</c:if>
+							<c:forEach var="i" begin="${udListTO.startBlock}" end="${udListTOendBlock}"
+								step="1">
+								<c:choose>
+									<c:when test="${udListTO.cpage == i}">
+										<button id="ju" name="${i}" onclick="p(this)"
+											class="btn btn-sm btn-outline-secondary w1">${i}</button>
+									</c:when>
+									<c:otherwise>
+									
+									</c:otherwise>
+
+								</c:choose>
+							</c:forEach>
+
+
+							<c:if test="${udListTO.endBlock == udListTO.totalPage }">
+								<li class="active"><a href="#" class="btn btn-common">
+										<i class="ti-angle-right"></i>
+								</a></li>
+							</c:if>
+
 						</ul>
 
 					</div>

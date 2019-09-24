@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.exam.action.Action;
 import com.exam.action.LoginAction;
 import com.exam.action.LoginOkAction;
+import com.exam.action.UserDeleteAction;
 import com.exam.action.UserViewAction;
 
 /**
@@ -142,6 +143,8 @@ public class UserController {
 	@RequestMapping(value = "/userDelete.do")
 	public ModelAndView userDelete(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
+		userAction = new UserDeleteAction();
+		userAction.execute(request, response);
 		modelAndView.setViewName("./admin/userDelete");
 		return modelAndView;
 	}

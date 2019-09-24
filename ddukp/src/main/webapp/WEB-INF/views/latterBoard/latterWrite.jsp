@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -9,6 +10,8 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>후기게시판 글쓰기</title>
 
+ <script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>  
 <script src="./resources/ckeditor/ckeditor.js"></script>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -47,8 +50,77 @@
 <!-- Color CSS Styles  -->
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
+
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function () {
+		/* var mlist=["엑시트","스파이더맨","변산","조선명탐정","토이스토리"];
+		$("#msearch").autocomplete({
+			source:mlist,
+			select:function(event,ui){
+				console.log(ui.item);
+			},
+			focus:function(event,ui){
+				return false;
+			}
+		}) */
+/* 		$("#bbb").on('click',function(){
+			$.ajax({
+				type : 'get',
+				url:"movieList.do",
+				dataType:"json",
+				success:function(data){
+					alert(data);
+					
+				},
+				error : function(
+						request,
+						status, error) {
+			
+					 alert("code:"
+							+ request.status
+							+ "\n"
+							+ "message:"
+							+ request.responseText
+							+ "\n"
+							+ "error:"
+							+ error); 
+				}
+			})
+		}); */
+		$("#freewrite").on('click',function(){
+			if ($('#genre').val() == 'non') {
+				alert('영화장르를 선택해주세요.');
+				return false;
+			}
+			if ($('input[name=msubject]').val() == '') {
+				alert('영화제목을 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=rsubject]').val() == '') {
+				alert('제목을 입력해주세요.');
+				return false;
+			}
+			var textarea=CKEDITOR.instances.leditor.getData();
+			 if (textarea.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "") == '') {
+				alert('내용을 입력해주세요.');
+				return false;
+			} 
+
+			
+		});
+	});
+
+	</script>
 </head>
 <body>
+<c:set var="flag" value="${flag }"></c:set>
+	<c:if test="${flag ne null and flag == 1 }">
+	<script type="text/javascript">
+	alert('오류가 발생했습니다. 다시 입력해주세요.');
+	</script>
+	</c:if>
 	<!-- Header Section Start -->
 	<div class="header">
 		<%@include file="../nav2.jsp"%>
@@ -71,26 +143,34 @@
 		</div>
 	</div>
 
+
 	<div id="content">
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="" class="">
+					<form action="latterWrtieOk.do" method="post" name="fw" >
 						<div class="col-md-3 form-group is-empty">
-							<label for="moviegenre">카테고리</label> <select id="category"
+							<label for="moviegenre">영화장르</label> <select id="genre"
 								class="form-control">
-								<option selected="selected">선택해주세요</option>
-								<option>일상</option>
-								<option>유머</option>
-								<option>이슈</option>
-								<option>연애</option>
-								<option>기타</option>
+								<option selected="selected" value="non">선택해주세요</option>
+								<option value="action">액션</option>
+								<option value="comedy">코미디</option>
+								<option value="thriller">공포/스릴러</option>
+								<option value="drama">드라마</option>
+								<option value="melo">멜로</option>
+								<option value="sf">SF</option>
 							</select>
 						</div>
 
 						<div class="col-md-9 form-group is-empty">
+							<label for="moviegenre">영화제목</label><i class="fa fa-search"
+								style="margin-top: 23px; margin-left: 15px;"></i> <input
+								type="text" class="form-control" placeholder="입력해주세요"
+								id="msubject" name="msubject">
+						</div>
+						<div class="col-md-12 form-group">
 							<label for="moviegenre">제목</label> <input type="text"
-								class="form-control" placeholder="제목">
+								class="form-control" placeholder="제목" id="rsubject" name="rsubject">
 						</div>
 						<div class="col-md-12 form-group">
 							<label for="moviegenre">내용</label>
@@ -98,26 +178,25 @@
 							<textarea name="leditor" id="leditor" rows="10" cols="10"
 								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
 							<script type="text/javascript">
-								
-									CKEDITOR.replace('leditor');
-								
+								CKEDITOR.replace('leditor');
 							</script>
 						</div>
 						<div class="col-md-12">
 							<input type="file" class="" id="">
 						</div>
+						
 						<div class="col-md-12" style="padding-top: 30px">
-							<a href="latterList.do" class="btn btn-common pull-left">목록</a> <a
-								href="latterList.do" class="btn btn-common pull-right">등록</a>
+							<a href="freeList.do" class="btn btn-common pull-left">목록</a>
+							<input type="submit" id="freewrite"  class="btn btn-common pull-right" value="글쓰기" /> 
+						
 						</div>
 					</form>
-
+<button id="bbb">하이</button>
 				</div>
 			</div>
 
 		</div>
 	</div>
-
 	<%@include file="../footer.jsp"%>
 	<!-- Main JS  -->
 	<script type="text/javascript" src="./assets/js/jquery-min.js"></script>
@@ -141,16 +220,5 @@
 	<script type="text/javascript"
 		src="./assets/js/jquery.themepunch.tools.min.js"></script>
 </body>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var oEditors = [];
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef : oEditors,
-			elPlaceHolder : "leditor",
-			sSkinURI : "./editor/SmartEditor2Skin.html",
-			fCreator : "createSEditor2"
-		});
 
-	});
-</script>
 </html>

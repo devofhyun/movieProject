@@ -9,12 +9,7 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <script type="text/javascript" src="./resources/jquery-3.4.1.js"></script>
 <script src="./resources/ckeditor/ckeditor.js"></script>
-<!-- <script type="text/javascript">
-$(document).ready(function(){
-	CKEDITOR.replace('leditor');
-});
-	
-</script> -->
+
 <!-- editor -->
 <script type="text/javascript"
 	src="./editor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
@@ -64,6 +59,9 @@ $(document).ready(function(){
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/lboard/fwrite.css" media="screen" />
 <title>자유게시판 글쓰기</title>
+<script type="text/javascript">
+				
+</script>
 </head>
 <body>
 	<div class="header">
@@ -92,7 +90,7 @@ $(document).ready(function(){
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="" class="">
+					<form action="write_ok.do" method="post" name="fw">
 						<div class="col-md-3 form-group is-empty">
 							<label for="moviegenre">카테고리</label> <select id="category"
 								class="form-control">

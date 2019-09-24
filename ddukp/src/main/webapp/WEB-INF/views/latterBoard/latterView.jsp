@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +58,15 @@
 	href="./assets/css/colors/red.css" media="screen" />
 <title>후기게시판 상세페이지</title>
 </head>
+
+
 <body>
+<c:set var="flag" value="${flag }"></c:set>
+	<c:if test="${flag ne null and flag == 0 }">
+	<script type="text/javascript">
+	alert('완료되었습니다.');
+	</script>
+	</c:if>
 	<!-- Header Section Start -->
 	<div class="header">
 		<%@include file="../nav2.jsp"%>

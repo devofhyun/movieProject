@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,6 +54,7 @@
 
 </head>
 <body>
+	<c:set var="latterList" value="${lLTO }" />
 	<!-- Header Section Start -->
 	<div class="header">
 		<%@include file="../nav2.jsp"%>
@@ -69,7 +72,7 @@
 						<h2 class="product-title">후기 게시판</h2>
 						<ol class="breadcrumb">
 							<li><a href="main.do"><i class="ti-home"></i> MOVIEP</a></li>
-							<li class="current">후기 게시판</li>
+							<li class="current">리스트</li>
 						</ol>
 					</div>
 				</div>
@@ -87,9 +90,9 @@
 						<div class="col-md-3 col-xs-4">
 							<div class="search-category-container1">
 								<select class="dropdown-product selectpicker">
-										<option selected="selected">---</option>
-										<option>제목</option>
-										<option>내용</option>
+									<option selected="selected">---</option>
+									<option>제목</option>
+									<option>내용</option>
 								</select>
 							</div>
 						</div>
@@ -110,31 +113,65 @@
 			<div class="job-alerts-item">
 				<div class="alerts-list">
 					<div class="row">
-						<div class="col-md-4 col-xs-3">
-							<p>글번호</p>
+						<div class="col-md-1 col-xs-1">
+							<p>번호</p>
 						</div>
-						<div class="col-md-4 col-xs-3">
+						<div class="col-md-5 col-xs-5">
 							<p>제목</p>
 						</div>
-						<div class="col-md-4 col-xs-3">
+						<div class="col-md-2 col-xs-2">
+							<p>글쓴이</p>
+						</div>
+						<div class="col-md-2 col-xs-2">
 							<p>날짜</p>
+						</div>
+						<div class="col-md-2 col-xs-2">
+							<p>조회수</p>
 						</div>
 
 					</div>
 				</div>
 				<div class="alerts-content">
 					<div class="row">
-						<a href="latterView.do">
-
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
+						<a href="latterView.do"> <!-- <div class="col-md-1 col-xs-1">
+								<p>글번호</p>
 							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
+							<div class="col-md-5 col-xs-5">
+								<p>제목</p>
 							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>hongildong@email.com</p>
+							<div class="col-md-2 col-xs-2">
+								<p>글쓴이</p>
 							</div>
+							<div class="col-md-2 col-xs-2">
+								<p>날짜</p>
+							</div>
+							<div class="col-md-2 col-xs-2">
+								<p>조회수</p>
+							</div> --> 
+							<%-- <c:out value="<div class="col-md-2 col-xs-2"><p></p></div>" /> --%>
+						<c:set var="latterList" value="${lLTO.latterList }"></c:set>
+						<%-- <p>${ latterList[0].uid}</p> --%>
+					<%-- 	<c:out value="${ latterList[0].rdate}"></c:out> --%>
+						
+						<%-- <c:forEach var="i" begin="0" end="${fn:length(latterList)-1}" step="1"> --%>
+						<c:forEach items="${lLTO.latterList}" var="to" > 
+							<div class="col-md-1 col-xs-1">
+								<p>${ to.rnum}</p>
+							</div>
+							<div class="col-md-5 col-xs-5">
+								
+								<p>[${ to.msubject}]${ to.rsubject}</p>
+							</div>
+							<div class="col-md-2 col-xs-2">
+								<p>${to.uid}</p>
+							</div>
+							<div class="col-md-2 col-xs-2">
+								<p>${ to.rdate}</p>
+							</div>
+							<div class="col-md-2 col-xs-2">
+								<p>${to.rhit}</p>
+							</div>
+						</c:forEach>
 						</a>
 
 					</div>
@@ -154,14 +191,14 @@
 					<li><a href="#">3</a></li>
 					<li><a href="#">4</a></li>
 					<li><a href="#">5</a></li>
-					<li class="active"><a href="#" class="btn btn-common">
-							<i class="ti-angle-right"></i>
+					<li class="active"><a href="#" class="btn btn-common"> <i
+							class="ti-angle-right"></i>
 					</a></li>
 				</ul>
 
 			</div>
 		</div>
-		
+
 	</div>
 
 

@@ -93,33 +93,6 @@ public class MovieController {
 		modelAndView.setViewName("./info/infoEdit");
 		return modelAndView;
 	}	
-	@RequestMapping(value = "/latterWrite.do")
-	public ModelAndView latterWrite(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./latterBoard/latterWrite");
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "/latterList.do")
-	public ModelAndView latterList(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./latterBoard/latterList");
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "/latterView.do")
-	public ModelAndView latterView(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./latterBoard/latterView");
-		return modelAndView;
-	}
-	
-	@RequestMapping(value = "/latterModify.do")
-	public ModelAndView latterModify(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./latterBoard/latterModify");
-		return modelAndView;
-	}
 	
 	@RequestMapping(value = "/columnWrite.do")
 	public ModelAndView columnWrite(HttpServletRequest request, HttpServletResponse response) {
