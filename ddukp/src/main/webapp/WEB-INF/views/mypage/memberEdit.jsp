@@ -9,6 +9,8 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>나의 정보 수정</title>
 
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>  
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -48,14 +50,28 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
-
+<script type="text/javascript">
+	$(document).ready(function () {
+		/* 값이 입력됐는지 확인 과정 */
+		$("#change_btn").on('click', function(){
+			if ($('input[name=name]').val() == '') {
+				alert('이름을 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=pwd]').val() == '') {
+				alert('비밀번호를 입력해주세요.');
+				
+				return false;
+			}
+		});
+	});
+</script>
 
 </head>
 <body>
 	<!-- Header Section Start -->
 	<div class="header">
 		<%@include file="../nav2.jsp"%>
-
 	</div>
 	<!-- Header Section End -->
 	<!-- Page Header Start -->
@@ -81,38 +97,33 @@
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-6">
 					<div class="">
-						<form class="form-ad">
+						<form action="memberEdit_ok.do" method="post" class="form-ad">
 							<div class="form-group">
-								<label class="control-label">아이디</label> <input
-									type="text" class="form-control" placeholder="hongildong" readonly="readonly">
+								<label class="control-label">아이디</label> 
+								<input type="text" class="form-control" placeholder="${to.uid }" readonly="readonly" name="id" id="id">
 							</div>
-							<div class="form-group">
-								<label class="control-label">이름</label> <input
-									type="text" class="form-control" placeholder="홍길동" readonly="readonly">
-							</div>
-							<div class="form-group">
-								<label class="control-label">비밀번호</label>
-								<input type="password" class="form-control" placeholder="비밀번호">
-							</div>
-							<div class="form-group">
-								<label class="control-label">비밀번호 확인 </label>
-								<input type="password" class="form-control" placeholder="비밀번호 확인">
-							</div>							
-							<div class="form-group">
-								<label class="control-label">생년월일 </label>
-								<input type="text" class="form-control" placeholder="yyyy-mm-dd">
-							</div>	
 							<div class="form-group">
 								<label class="control-label">이메일 </label>
-								<input type="text" class="form-control" placeholder="honggildong@email.com">
+								<input type="text" class="form-control" placeholder="${to.uemail }" readonly="readonly" name="email" id=>
+							</div>		
+							<div class="form-group">
+								<label class="control-label">이름</label> 
+								<input type="text" class="form-control" placeholder="${to.uname}" name="name" id="name">
 							</div>			
 							<div class="form-group">
-								<label class="control-label">전화번호 </label>
-								<input type="text" class="form-control" placeholder="010-1234-1234">
-							</div>											
-							<div>													
-							<a href="memberInfo.do" class="btn btn-common pull-right">나의 정보 수정 완료</a>
-						</div>						
+								<label class="control-label">생년월일 (선택)</label>
+								<input type="text" class="form-control" placeholder="${to.ubirth }" name="birth" id="birth">
+							</div>		
+							<div class="form-group">
+								<label class="control-label">전화번호 (선택)</label>
+								<input type="text" class="form-control" placeholder="${to.uphone }" name="phone" id="phone">
+							</div>					
+							<hr/>						
+							<div class="form-group">
+								<label class="control-label">비밀번호</label>
+								<input type="password" class="form-control" placeholder="비밀번호" name="pwd" id="pwd">
+							</div>												
+							<input type="submit" id="change_btn" class="btn btn-common pull-right" value="완료">						
 						</form>
 					</div>
 				</div>

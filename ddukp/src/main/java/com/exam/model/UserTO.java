@@ -4,6 +4,7 @@ public class UserTO {
 
 	private int num;
 	private String uid;
+	private String uname;
 	private String upwd;
 	private String uemail;
 	private String ubirth;
@@ -21,6 +22,12 @@ public class UserTO {
 	}
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+	public String getUname() {
+		return uname;
+	}
+	public void setUname(String uname) {
+		this.uname = uname;
 	}
 	public String getUpwd() {
 		return upwd;

@@ -128,7 +128,25 @@
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 			<version>1.1.1</version>
-		</dependency>			        
+		</dependency>	
+		
+		<!-- Java Mail API -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>	
+		<!-- 랜덤 문자열 만들기위한 라이브러리 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId> 
+			<artifactId>commons-lang3</artifactId> 
+			<version>3.4</version>		
+		</dependency>  	        
 	</dependencies>
     <build>
         <plugins>

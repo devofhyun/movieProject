@@ -9,6 +9,8 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>아이디 찾기</title>
 
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>  
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -48,7 +50,17 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
-
+<script type="text/javascript">
+	$(document).ready(function () {
+		/* 값이 입력됐는지 확인 과정 */
+		$("#findId_btn").on('click',function(){
+			if ($('input[name=email]').val() == '') {
+				alert('이메일을 입력해주세요.');
+				return false;
+			}
+		});
+	});
+</script>
 
 </head>
 <body>
@@ -91,9 +103,9 @@
 
 						<div class="page-login-form is-selected" id="cd-reset-password">
 							<p class="cd-form-message">
-								회원정보에 등록한 이메일로 아이디를 보냈습니다.
+								해당 이메일로 회원정보에 등록된 아이디를 보냅니다.
 							</p>
-							<form class="cd-form">
+							<form class="cd-form" action="findId_ok.do" method="post">
 								<div class="form-group">
 									<div class="input-icon">
 										<i class="ti-email"></i> <input type="text" id="sender-email"
@@ -101,7 +113,7 @@
 									</div>
 								</div>
 								<p class="fieldset">
-									<button class="btn btn-common log-btn" type="submit">아이디 찾기</button>
+									<button class="btn btn-common log-btn" type="submit" id="findId_btn">아이디 찾기</button>
 								</p>
 							</form>
 							<p class="cd-form-bottom-message">

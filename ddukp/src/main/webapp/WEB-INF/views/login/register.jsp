@@ -9,6 +9,8 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>회원가입</title>
 
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>  
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -48,7 +50,84 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
+<script type="text/javascript">
+	$(document).ready(function () {
 
+		/* 이메일 인증코드 어떻게 할지 생각하기! */
+		var mailcode;
+		$("#email-code").hide();
+		$("#send-email-code").on('click',function(){
+			var email = $('input[name=email]').val();
+			if (email == '') {
+				alert('이메일을 입력해주세요.');
+				return false;
+			} else {
+				$.ajax({
+					type :'get',
+					url:"sendMail.do",
+					data:"email=" + email,
+					success:function(code){
+						mailcode = code;
+						alert("인증코드가 메일에 전송되었습니다. \n확인하여 인증코드를 적어주시기 바랍니다.");
+						$("#email-code").show();
+				    	$("#send-email-code").attr("mailcheck", "done");
+						
+					},
+					error : function() {
+						alert("인증코드 전송에 실패하였습니다."); 
+					}
+				})
+			}
+		});
+		
+		/* 비밀번호, 비밀번호 확인 비교 과정 */
+		$("#pwd-check-same").hide();
+		$("input").keyup(function(){
+			if($('input[name=pwd]').val() == $('input[name=pwd-check]').val()) {
+	            $("#pwd-check-same").hide();
+	            $("#register").removeAttr("disabled");
+			} else {
+	            $("#pwd-check-same").show();
+	            $("#register").attr("disabled", "disabled");
+			}
+		});
+		
+		$("#register").on('click',function(){
+			if ($('input[name=id]').val() == '') {
+				alert('아이디를 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=name]').val() == '') {
+				alert('이름을 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=email]').val() == '') {
+				alert('이메일을 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=pwd]').val() == '') {
+				alert('비밀번호를 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=pwd-check]').val() == '') {
+				alert('비밀번호 확인을 입력해주세요.');
+				return false;
+			}
+			if ($('#send-email-code').attr('mailcheck') == null) {
+				alert('이메일 인증해주시기 바랍니다.');
+				return false;
+			}
+			/* 이메일 인증 코드 확인 과정 */
+			if ($("#email-code").val() == '') {
+				alert('인증 코드를 입력해주세요.');
+				return false;
+			} else if ($("#email-code").val() != mailcode) {
+				alert('인증 코드가 다릅니다.');
+				return false;
+			} 
+		});
+	});
+</script>
 
 </head>
 <body>
@@ -91,45 +170,58 @@
 
 						<div id="cd-signup" class="is-selected">
 							<div class="page-login-form register">
-								<form role="form" class="login-form">
+								<form action="register_ok.do" method="post" name="fw" class="login-form">
 									<div class="form-group">
 										<div class="input-icon">
-											<i class="ti-user"></i> <input type="text"
-												class="form-control" name="name" placeholder="아이디">
+											<i class="ti-user"></i> <input type="text" id="id"
+												class="form-control" name="id" placeholder="아이디">
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-icon">
+											<i class="ti-user"></i> <input type="text" id="name"
+												class="form-control" name="name" placeholder="이름">
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="input-icon">
 											<i class="ti-email"></i> <input type="text" id="sender-email"
 												class="form-control" name="email" placeholder="이메일">
-												<button class="btn btn-common1 email-btn">인증 보내기</button>
+											<a class="btn btn-common1 email-btn" id="send-email-code">인증 보내기</a>
+										</div>
+									</div>
+									<div class="form-group">
+										<div class="input-icon">
+											<i class="ti-lock"></i> <input type="text" id="email-code"
+												class="form-control" name="email-code" placeholder="메일로 받은 인증코드을 적으세요">
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="input-icon">
 											<i class="ti-lock"></i> <input type="password"
-												class="form-control" name="password" placeholder="비밀번호">
+												class="form-control" name="pwd" placeholder="비밀번호">
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="input-icon">
 											<i class="ti-lock"></i> <input type="password"
-												class="form-control" name="password" placeholder="비밀번호 확인">
+												class="form-control" name="pwd-check" placeholder="비밀번호 확인">
 										</div>
 									</div>
+									<div id="pwd-check-same" style="color:red">비밀번호가 일치하지 않습니다.<br/><br/></div>
 									<div class="form-group">
 										<div class="input-icon">
 											<i class="ti-id-badge"></i> <input type="text"
-												class="form-control" name="birth" placeholder="생년월일">
+												class="form-control" name="birth" placeholder="생년월일  (선택)">
 										</div>
 									</div>									
 									<div class="form-group">
 										<div class="input-icon">
 											<i class="ti-id-badge"></i> <input type="text"
-												class="form-control" name="phone" placeholder="전화번호">
+												class="form-control" name="phone" placeholder="전화번호 (선택)">
 										</div>
 									</div>									
-									<button class="btn btn-common log-btn">회원가입 하기</button>
+									<input type="submit" id="register" class="btn btn-common log-btn" value="회원가입 하기" />
 								</form>
 							</div>
 						</div>

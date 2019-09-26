@@ -11,6 +11,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class UserDAO {
 	private DataSource dataSource;
 	
@@ -73,7 +75,7 @@ public class UserDAO {
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select uid, upwd, uemail, date_format(ubirth, '%Y-%m-%d') ubirth, uphone from member where uid = ?";
+			String sql = "select uid, uname, upwd, uemail, date_format(ubirth, '%Y-%m-%d') ubirth, uphone from member where uid = ?";
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
@@ -81,6 +83,7 @@ public class UserDAO {
 			System.out.println(id);
 			if(rs.next()) {
 				to.setUid(rs.getString("uid"));
+				to.setUname(rs.getString("uname"));
 				to.setUbirth(rs.getString("ubirth"));
 				to.setUemail(rs.getString("uemail"));
 				to.setUphone(rs.getString("uphone"));
@@ -243,6 +246,199 @@ public class UserDAO {
 			if(conn!=null)try {conn.close();}catch(SQLException e) {}
 		}
 		return udListTO;
+	}
+	
+	
+	public int userRegister(UserTO to) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		int flag = 1;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "insert into member (uid, uname, upwd, uemail, ubirth, uphone, udate) values (?, ?, ?, ?, ?, ?, now());";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, to.getUid());
+			pstmt.setString(2, to.getUname());
+			pstmt.setString(3, to.getUpwd());
+			pstmt.setString(4, to.getUemail());
+			pstmt.setString(5, to.getUbirth());
+			pstmt.setString(6, to.getUphone());
+			
+			int result = pstmt.executeUpdate();
+			if(result == 0) {
+				flag = 1;
+				
+			}else if(result == 1) {
+				flag = 0;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		
+		return flag;
+	}
+	
+
+	public UserTO findId(String email) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserTO to = new UserTO();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select uid from member where uemail = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, email);
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				to.setUid(rs.getString("uid"));
+			}
+			
+			System.out.println("email : " + email + ", id : " + to.getUid());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return to;
+	}
+	
+	public UserTO findPwd(String id, String email) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		UserTO to = new UserTO();
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String tempPwd = RandomStringUtils.randomAlphabetic(10);
+
+			String sql = "update member set upwd = ? where uid = ? and uemail = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, tempPwd);
+			pstmt.setString(2, id);
+			pstmt.setString(3, email);
+			
+			int result = pstmt.executeUpdate();
+			if(result > 0) {
+				to.setUpwd(tempPwd);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return to;
+	}
+	
+	public int userEdit(UserTO to) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		int flag = 1;
+		try {
+			conn = dataSource.getConnection();
+
+			if(to.getUbirth() != null && to.getUphone() != null) {
+				String sql = "update member set uname = ?, ubirth = ?, uphone = ? where uid = ? and upwd = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, to.getUname());
+				pstmt.setString(2, to.getUbirth());
+				pstmt.setString(3, to.getUphone());
+				pstmt.setString(4, to.getUid());
+				pstmt.setString(5, to.getUpwd());
+				
+			} else if(to.getUbirth() != null && to.getUphone() == null) {
+				String sql = "update member set uname = ?, ubirth = ? where uid = ? and upwd = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, to.getUname());
+				pstmt.setString(2, to.getUbirth());
+				pstmt.setString(3, to.getUid());
+				pstmt.setString(4, to.getUpwd());
+				
+			} else if(to.getUbirth() == null && to.getUphone() != null) {
+				String sql = "update member set uname = ?, uphone = ? where uid = ? and upwd = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, to.getUname());
+				pstmt.setString(2, to.getUphone());
+				pstmt.setString(3, to.getUid());
+				pstmt.setString(4, to.getUpwd());
+				
+			} else if(to.getUbirth() == null && to.getUphone() == null) {
+				String sql = "update member set uname = ? where uid = ? and upwd = ?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, to.getUname());
+				pstmt.setString(2, to.getUid());
+				pstmt.setString(3, to.getUpwd());
+				
+			}
+			
+			int result = pstmt.executeUpdate();
+			if(result > 0) {
+				flag = 0;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
+	}
+
+	public int changePwd(UserTO to) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int flag = 1;
+		
+		try {
+			conn = dataSource.getConnection();
+
+			String sql = "update member set upwd = ? where uid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, to.getUpwd());
+			pstmt.setString(2, to.getUid());
+			
+			int result = pstmt.executeUpdate();
+			if(result > 0) {
+				flag = 0;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
 	}
 	
 }

@@ -9,6 +9,8 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>비밀번호 찾기</title>
 
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>  
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -48,6 +50,21 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
+<script type="text/javascript">
+	$(document).ready(function () {
+		/* 값이 입력됐는지 확인 과정 */
+		$("#findPwd_btn").on('click',function(){
+			if ($('input[name=id]').val() == '') {
+				alert('아이디를 입력해주세요.');
+				return false;
+			}
+			if ($('input[name=email]').val() == '') {
+				alert('이메일을 입력해주세요.');
+				return false;
+			}
+		});
+	});
+</script>
 
 
 </head>
@@ -91,19 +108,13 @@
 
 						<div class="page-login-form is-selected" id="cd-reset-password">
 							<p class="cd-form-message">
-								이름, 아이디, 이메일을 입력해주세요.
+								아이디, 이메일을 입력해주세요.
 							</p>
-							<form class="cd-form">
+							<form class="cd-form" action="findPwd_ok.do" method="post">
 								<div class="form-group">
 									<div class="input-icon">
 										<i class="ti-user"></i> <input type="text" id="sender-email"
-											class="form-control" name="email" placeholder="아이디">
-									</div>
-								</div>
-								<div class="form-group">								
-									<div class="input-icon">
-										<i class="ti-pencil"></i> <input type="text" id="sender-email"
-											class="form-control" name="email" placeholder="이름">
+											class="form-control" name="id" placeholder="아이디">
 									</div>
 								</div>
 								<div class="form-group">																							
@@ -113,7 +124,7 @@
 									</div>																		
 								</div>
 								<p class="fieldset">
-									<button class="btn btn-common log-btn" type="submit">비밀번호 찾기</button>
+									<button class="btn btn-common log-btn" type="submit" id="findPwd_btn">비밀번호 찾기</button>
 								</p>
 							</form>
 							<p class="cd-form-bottom-message">

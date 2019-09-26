@@ -43,7 +43,7 @@
 							<li><a href="infoBoard.do"> 공지사항 </a></li>
 							<li><a href="customerCenter.do"> 고객센터 </a></li>
 						</ul></li>
-					<c:if test="${!empty sid && sid != 'adminmoviep'}">
+					<c:if test="${!empty sid && sid != 'admin'}">
 						<li><a href="memberInfo.do"> 마이페이지 <i
 								class="fa fa-angle-down"></i>
 						</a>
@@ -55,7 +55,7 @@
 
 							</ul></li>
 					</c:if>
-					<c:if test="${!empty sid && sid == 'adminmoviep'}">
+					<c:if test="${!empty sid && sid == 'admin'}">
 						<li><a href="userDelete.do"> 관리자페이지 <i
 								class="fa fa-angle-down"></i>
 						</a>
@@ -95,18 +95,31 @@
 					<li><a href="infoBoard.do">공지사항</a></li>
 					<li><a href="customerCenter.do">고객센터</a></li>
 				</ul></li>
-			<li><a href="memberInfo.do">마이페이지</a>
-				<ul>
-					<li><a href="memberInfo.do">나의 정보</a></li>
-					<li><a href="memberScrap.do">스크랩 목록</a></li>
-					<li><a href="memberWrite.do">내가 글 쓴 목록</a></li>
-				</ul></li>
-			<li><a href="userDelete.do">관리자페이지</a>
-				<ul>
-					<li><a href="userDelete.do">회원 관리</a></li>
-				</ul></li>
-			<li class="btn-m"><a href="login.do"><i class="ti-lock"></i>
-					로그인</a></li>
+			<c:if test="${!empty sid && sid != 'admin'}">
+
+				<li><a href="memberInfo.do">마이페이지</a>
+					<ul>
+						<li><a href="memberInfo.do">나의 정보</a></li>
+						<li><a href="memberScrap.do">스크랩 목록</a></li>
+						<li><a href="memberWrite.do">내가 글 쓴 목록</a></li>
+					</ul></li>
+			</c:if>
+			<c:if test="${!empty sid && sid == 'admin'}">
+
+				<li><a href="userDelete.do">관리자페이지</a>
+					<ul>
+						<li><a href="userDelete.do">회원 관리</a></li>
+					</ul></li>
+			</c:if>
+			<c:if test="${empty sid }">
+
+				<li class="btn-m"><a href="login.do"><i class="ti-lock"></i>
+						로그인</a></li>
+			</c:if>
+			<c:if test="${!empty sid }">
+				<li class="btn-m"><a href="logout.do"><i class="ti-lock"></i>
+						로그아웃</a></li>
+			</c:if>
 		</ul>
 		<!-- Mobile Menu End -->
 	</nav>

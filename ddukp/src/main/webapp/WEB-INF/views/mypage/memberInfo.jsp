@@ -87,10 +87,10 @@
 								<label class="control-label">아이디</label> <input
 									type="text" class="form-control" value="${to.uid }" readonly="readonly">
 							</div>
-<%-- 							<div class="form-group">
+ 							<div class="form-group">
 								<label class="control-label">이름</label> <input
 									type="text" class="form-control" value="${to.uname }" readonly="readonly">
-							</div>	 --%>		
+							</div>	
 							<div class="form-group">
 								<label class="control-label">생년월일 </label>
 								<input type="text" class="form-control" value="${to.ubirth }" readonly="readonly">

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -90,7 +90,7 @@
 			})
 		}); */
 		$("#freewrite").on('click',function(){
-			if ($('#genre').val() == 'non') {
+			if ($('#rcategory').val() == 'non') {
 				alert('영화장르를 선택해주세요.');
 				return false;
 			}
@@ -148,17 +148,13 @@
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="latterWrtieOk.do" method="post" name="fw" >
+					<form action="latterWriteOk.do" method="post" name="fw" >
 						<div class="col-md-3 form-group is-empty">
-							<label for="moviegenre">영화장르</label> <select id="genre"
+							<label for="moviegenre">카테고리</label> <select id="ctgname" name="ctgname"
 								class="form-control">
 								<option selected="selected" value="non">선택해주세요</option>
-								<option value="action">액션</option>
-								<option value="comedy">코미디</option>
-								<option value="thriller">공포/스릴러</option>
-								<option value="drama">드라마</option>
-								<option value="melo">멜로</option>
-								<option value="sf">SF</option>
+								<option value="후기">후기</option>
+								<option value="질문">질문</option>
 							</select>
 						</div>
 
@@ -186,8 +182,8 @@
 						</div>
 						
 						<div class="col-md-12" style="padding-top: 30px">
-							<a href="freeList.do" class="btn btn-common pull-left">목록</a>
-							<input type="submit" id="freewrite"  class="btn btn-common pull-right" value="글쓰기" /> 
+							<a href="freeList.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a>
+							<input type="submit" id="freewrite"  class="btn btn-common pull-right" value="등록" /> 
 						
 						</div>
 					</form>

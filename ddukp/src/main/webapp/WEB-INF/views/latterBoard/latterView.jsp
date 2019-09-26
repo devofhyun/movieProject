@@ -97,20 +97,26 @@
 					<table class="table table-borderless table-sm">
 
 						<tr>
-							<th class="col-md-4" style="text-align: center;">[카테고리] <b>제목</b></th>
-							<th class="col-md-4">날짜</th>
-							<th class="col-md-4">조회수</th>
+							<th class="col-md-4" style="text-align: center;">[${lTO.msubject }]&nbsp&nbsp&nbsp <b>${lTO.rsubject }</b></th>
+							<th class="col-md-3">${lTO.uid }</th>
+							<th class="col-md-3">${lTO.rdate }</th>
+							<th class="col-md-2">${lTO.rhit }</th>
 						</tr>
 					</table>
 
-					<div>내용</div>
+					<div>${lTO.rcontent }</div>
 
 				</div>
 				<div class="col-md-12" style="padding-top: 30px">
-					<a href="latterList.do" class="btn btn-common pull-left">목록</a> <a
-						href="latterModify.do" class="btn btn-common pull-right">글 수정</a>
-					<a href="infoEdit.do" class="btn btn-common pull-right"
+					<a href="latterList.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a> 
+					<c:if test="${sid eq lTO.uid }">
+					
+					<a href='latterModify.do?rnum=${param.rnum}&cpage=${param.cpage}' class="btn btn-common pull-right">수정</a> 
+					 </c:if>
+					 <c:if test="${sid eq lTO.uid }">
+					<a href="infoEdit.do?rnum=${param.rnum}&cpage=${param.cpage}" class="btn btn-common pull-right"
 						id="btn-left1">삭제</a>
+						</c:if>
 				</div>
 			</div>
 
