@@ -81,23 +81,23 @@
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-6">
 					<div class="">
-						<form class="form-ad">
+						<form class="form-ad" action="memberDelete_ok.do" method="post">
 							<div class="form-group">
 								<label class="control-label">아이디</label> <input
-									type="text" class="form-control" placeholder="hongildong" readonly="readonly">
+									type="text" class="form-control" placeholder="${to.uid }" readonly="readonly" id="id", name="id">
 							</div>
 							<div class="form-group">
 								<label class="control-label">이름</label> <input
-									type="text" class="form-control" placeholder="홍길동" readonly="readonly">
+									type="text" class="form-control" placeholder="${to.uname }" readonly="readonly">
 							</div>			
 							<div class="form-group">
 								<label class="control-label">비밀번호 </label>
-								<input type="password" class="form-control" placeholder="비밀번호">
+								<input type="password" class="form-control" placeholder="비밀번호" id="pwd" name="pwd">
 							</div>											
 							<div>	
 							<a href="memberInfo.do" class="btn btn-common pull-left">취소하기</a>
 												
-							<a href="main.do" class="btn btn-common pull-right">탈퇴하기</a>
+							<button class="btn btn-common pull-right">탈퇴하기</button>
 						</div>						
 						</form>
 					</div>

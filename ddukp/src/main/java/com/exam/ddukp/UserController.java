@@ -24,8 +24,11 @@ import com.exam.action.FindIdAction;
 import com.exam.action.FindPwdAction;
 import com.exam.action.LoginAction;
 import com.exam.action.LoginOkAction;
+import com.exam.action.MemberDeleteOkAction;
 import com.exam.action.SendMailAction;
+import com.exam.action.UserChangePwdAction;
 import com.exam.action.UserDeleteAction;
+import com.exam.action.UserDeleteOkAction;
 import com.exam.action.UserEditAction;
 import com.exam.action.UserRegisterAction;
 import com.exam.action.UserViewAction;
@@ -61,15 +64,13 @@ public class UserController {
 
 		HttpSession session = request.getSession();
 
-		System.out.println("컨트롤러 플래그 : " + request.getAttribute("flag"));
-
 		if (request.getAttribute("flag").equals(0)) {
 			session.setAttribute("sid", request.getParameter("id"));
 			modelAndView.setViewName("main");
 
 		} else {
+			
 			modelAndView.setViewName("./login/login");
-			System.out.println("sid : " + request.getParameter("id"));
 		}
 
 		return modelAndView;
@@ -94,20 +95,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register_ok.do")
-	public ModelAndView register_ok(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView modelAndView = new ModelAndView();
-
+	public void register_ok(HttpServletRequest request, HttpServletResponse response) {
 		System.out.println("register_ok");
 		
 		userAction = new UserRegisterAction();
 		userAction.execute(request, response);
-		
-		int flag = (Integer)request.getAttribute("flag");
-		if (flag == 0) {
-			modelAndView.setViewName("./login/login");
-		}
-
-		return modelAndView;
 	}
 	
 	@Autowired
@@ -194,6 +186,8 @@ public class UserController {
 	@RequestMapping(value = "/memberDelete.do")
 	public ModelAndView memberDelete(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
+		userAction = new UserViewAction();
+		userAction.execute(request, response);
 		modelAndView.setViewName("./mypage/memberDelete");
 		return modelAndView;
 	}
@@ -201,7 +195,12 @@ public class UserController {
 	@RequestMapping(value = "/memberDelete_ok.do")
 	public ModelAndView memberDelete_ok(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("./mypage/memberDelete");
+		HttpSession session = request.getSession();
+
+		
+		userAction = new MemberDeleteOkAction();
+		userAction.execute(request, response);
+		modelAndView.setViewName("./mypage/memberDeleteOk");
 		return modelAndView;
 	}
 
@@ -224,12 +223,28 @@ public class UserController {
 		modelAndView.setViewName("./mypage/changePwd");
 		return modelAndView;
 	}
+	@RequestMapping(value = "/changePwd_ok.do")
+	public ModelAndView changePwd_ok(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		userAction = new UserChangePwdAction();
+		userAction.execute(request, response);
+		modelAndView.setViewName("./mypage/changePwd");
+		return modelAndView;
+	}
 	@RequestMapping(value = "/userDelete.do")
 	public ModelAndView userDelete(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
 		userAction = new UserDeleteAction();
 		userAction.execute(request, response);
 		modelAndView.setViewName("./admin/userDelete");
+		return modelAndView;
+	}
+	@RequestMapping(value = "/userDelete_ok.do")
+	public ModelAndView userDelete_ok(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		userAction = new UserDeleteOkAction();
+		userAction.execute(request, response);
+		modelAndView.setViewName("./admin/userDelete_ok");
 		return modelAndView;
 	}
 }

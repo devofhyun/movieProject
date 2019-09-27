@@ -114,7 +114,7 @@
 			<div class="row">
 				<div class="col-md-6 col-md-offset-3">
 					<div class="">
-						<form class="action=" changePwd_ok.do" method="post"form-ad">
+						<form action="changePwd_ok.do" method="post" class="form-ad">
 							<div class="form-group">
 								<label class="control-label">현재 비밀번호</label> 
 								<input type="password" class="form-control" placeholder="비밀번호" name="pwd">

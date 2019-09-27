@@ -38,6 +38,8 @@ CKEDITOR.editorConfig = function( config ) {
 	
 
 	config.extraPlugins = 'font';
+	
+
 
 	config.font_names = '돋움; 굴림; 맑은 고딕; 바탕; 궁서; 휴먼둥근헤드라인; 함초롬바탕; Quattrocento Sans; Nanum Gothic Coding;' + CKEDITOR.config.font_names;
 	

@@ -92,12 +92,12 @@
 									type="text" class="form-control" value="${to.uname }" readonly="readonly">
 							</div>	
 							<div class="form-group">
-								<label class="control-label">생년월일 </label>
-								<input type="text" class="form-control" value="${to.ubirth }" readonly="readonly">
-							</div>	
-							<div class="form-group">
 								<label class="control-label">이메일 </label>
 								<input type="text" class="form-control" value="${to.uemail }" readonly="readonly">
+							</div>	
+							<div class="form-group">
+								<label class="control-label">생년월일 </label>
+								<input type="text" class="form-control" value="${to.ubirth }" readonly="readonly">
 							</div>			
 							<div class="form-group">
 								<label class="control-label">전화번호 </label>

@@ -48,7 +48,6 @@ public class UserDAO {
 			
 			if(rs.next()) {
 				if(rs.getString("upwd").equals(to.getUpwd())) {
-					System.out.println("Dao비번 : " + to.getUpwd());
 					// 회원
 					flag = 0;
 				}else {
@@ -65,7 +64,43 @@ public class UserDAO {
 		}
 		return flag;
 	}
-	
+	public int memberDeleteOk(UserTO to) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int flag = 2;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "delete from member where uid = ? and upwd = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, to.getUid());
+			pstmt.setString(2, to.getUpwd());
+
+
+			int result = pstmt.executeUpdate();			
+			if(result == 0) {
+				flag = 1;
+
+			} else if(result == 1) {
+				flag = 0;
+
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
+	}
+		
 	public UserTO userView(String id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -80,7 +115,6 @@ public class UserDAO {
 			pstmt.setString(1, id);
 			rs = pstmt.executeQuery();
 			
-			System.out.println(id);
 			if(rs.next()) {
 				to.setUid(rs.getString("uid"));
 				to.setUname(rs.getString("uname"));
@@ -135,7 +169,7 @@ public class UserDAO {
 		
 	}
 	
-	public int userDeleteOk(UserTO to) {
+	public int userDeleteOk(String id) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		int flag = 2;
@@ -143,9 +177,9 @@ public class UserDAO {
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "delete from user where uid = ?";
+			String sql = "delete from member where uid = ?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, to.getUid());
+			pstmt.setString(1, id);
 			
 			int result = pstmt.executeUpdate();
 			if(result == 0) {
@@ -154,6 +188,8 @@ public class UserDAO {
 			}else if(result == 1) {
 				flag = 0;
 			}
+			System.out.println(flag);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,7 +231,9 @@ public class UserDAO {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
 		ArrayList<UserTO> uList = new ArrayList<UserTO>();
+		
 		int cpage = udListTO.getCpage();
 		int recordPerPage = udListTO.getRecordPerPage();
 		int blockPerPage = udListTO.getBlockPerPage();
@@ -211,7 +249,7 @@ public class UserDAO {
 			udListTO.setTotalRecord(rs.getRow());
 			rs.beforeFirst();
 			
-			udListTO.setTotalPage(((udListTO.getTotalPage() - 1) / recordPerPage) + 1);
+			udListTO.setTotalPage(((udListTO.getTotalRecord() - 1) / recordPerPage) + 1);
 			int skip = (cpage - 1) * recordPerPage;
 			if(skip != 0)
 				rs.absolute(skip);
@@ -248,7 +286,6 @@ public class UserDAO {
 		return udListTO;
 	}
 	
-	
 	public int userRegister(UserTO to) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -258,7 +295,12 @@ public class UserDAO {
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "insert into member (uid, uname, upwd, uemail, ubirth, uphone, udate) values (?, ?, ?, ?, ?, ?, now());";
+			String sql = "";
+			if(to.getUbirth() == "") {
+				sql = "insert into member (uid, uname, upwd, uemail, ubirth, uphone, udate) values (?, ?, ?, ?, ?, ?, now());";
+			} else {
+				sql = "insert into member (uid, uname, upwd, uemail, ubirth, uphone, udate) values (?, ?, ?, ?, date_format(?, '%Y%m%d'), ?, now());";
+			}
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, to.getUid());
@@ -350,7 +392,7 @@ public class UserDAO {
 		}
 		return to;
 	}
-	
+
 	public int userEdit(UserTO to) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -359,40 +401,20 @@ public class UserDAO {
 		int flag = 1;
 		try {
 			conn = dataSource.getConnection();
-
-			if(to.getUbirth() != null && to.getUphone() != null) {
-				String sql = "update member set uname = ?, ubirth = ?, uphone = ? where uid = ? and upwd = ?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, to.getUname());
-				pstmt.setString(2, to.getUbirth());
-				pstmt.setString(3, to.getUphone());
-				pstmt.setString(4, to.getUid());
-				pstmt.setString(5, to.getUpwd());
-				
-			} else if(to.getUbirth() != null && to.getUphone() == null) {
-				String sql = "update member set uname = ?, ubirth = ? where uid = ? and upwd = ?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, to.getUname());
-				pstmt.setString(2, to.getUbirth());
-				pstmt.setString(3, to.getUid());
-				pstmt.setString(4, to.getUpwd());
-				
-			} else if(to.getUbirth() == null && to.getUphone() != null) {
-				String sql = "update member set uname = ?, uphone = ? where uid = ? and upwd = ?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, to.getUname());
-				pstmt.setString(2, to.getUphone());
-				pstmt.setString(3, to.getUid());
-				pstmt.setString(4, to.getUpwd());
-				
-			} else if(to.getUbirth() == null && to.getUphone() == null) {
-				String sql = "update member set uname = ? where uid = ? and upwd = ?";
-				pstmt = conn.prepareStatement(sql);
-				pstmt.setString(1, to.getUname());
-				pstmt.setString(2, to.getUid());
-				pstmt.setString(3, to.getUpwd());
-				
+			
+			String sql;
+			if(to.getUbirth() == "") {
+				sql = "update member set uname = ?, ubirth = ?, uphone = ? where uid = ? and upwd = ?";
+			} else {
+				sql = "update member set uname = ?, ubirth = date_format(?, '%Y%m%d'), uphone = ? where uid = ? and upwd = ?";
 			}
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, to.getUname());
+			pstmt.setString(2, to.getUbirth());
+			pstmt.setString(3, to.getUphone());
+			pstmt.setString(4, to.getUid());
+			pstmt.setString(5, to.getUpwd());
 			
 			int result = pstmt.executeUpdate();
 			if(result > 0) {
@@ -410,7 +432,7 @@ public class UserDAO {
 		return flag;
 	}
 
-	public int changePwd(UserTO to) {
+	public int userChangePwd(UserTO to) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -440,5 +462,4 @@ public class UserDAO {
 		}
 		return flag;
 	}
-	
 }

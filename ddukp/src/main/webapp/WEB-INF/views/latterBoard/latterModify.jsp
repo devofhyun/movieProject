@@ -121,7 +121,7 @@
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="latterWriteOk.do" method="post" name="fw" >
+					<form action="latterModifyOk.do" method="post" name="fw" >
 					<input type="hidden" name="cpage" value="${param.cpage}" />
 					<input type="hidden" name="rnum" value="${param.rnum}" />
 						<div class="col-md-3 form-group is-empty">
@@ -148,9 +148,7 @@
 
 							<textarea name="leditor" id="leditor" rows="10" cols="10"
 								class="form-control" style='width: 100%; min-width: 160px;'>${lTO.rcontent}</textarea>
-							<script type="text/javascript">
-								CKEDITOR.replace('leditor');
-							</script>
+					
 						</div>
 						<div class="col-md-12">
 							<input type="file" class="" id="">
@@ -189,6 +187,29 @@
 		src="./assets/js/jquery.themepunch.revolution.min.js"></script>
 	<script type="text/javascript"
 		src="./assets/js/jquery.themepunch.tools.min.js"></script>
+			<script type="text/javascript">
+	 
+		CKEDITOR.replace('leditor', {
+			
+			filebrowserImageUploadUrl : 'fileupload.do'
+		});
+		
+		 CKEDITOR.on('dialogDefinition', function( ev ){
+	            var dialogName = ev.data.name;
+	            var dialogDefinition = ev.data.definition;
+	          
+	            switch (dialogName) {
+	                case 'image': //Image Properties dialog
+	                    //dialogDefinition.removeContents('info');
+	                    dialogDefinition.removeContents('Link');
+	                    dialogDefinition.removeContents('advanced');
+	                    break;
+	            }
+	        });
+		
+		
+	</script>
+</body>
 </body>
 
 </html>

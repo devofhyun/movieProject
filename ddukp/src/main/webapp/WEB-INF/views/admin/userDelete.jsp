@@ -10,6 +10,8 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>회원 관리</title>
 
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -49,7 +51,25 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
+<script type="text/javascript">
+	/* function button_event(){
+	 if(confirm(document.getElementById("userBtn").getAttribute( 'name' ) + "탈퇴시키겠습니까?") == true ){
+	 location.href='userDelete_ok.do?userid=member12';
+	 }else{
+	 return;
+	 }
+	 } */
+	$(document).ready(function() {
+		$(".userBtn").on('click', function() {
+		if(confirm($(this).attr('name') + "탈퇴시키겠습니까?") == true){
+			location.href='userDelete_ok.do?userid='+$(this).attr('name');
 
+		}else{
+			return;
+		}
+		});
+	});
+</script>
 
 </head>
 <body>
@@ -125,19 +145,25 @@
 							</div>
 						</div>
 						<div class="alerts-content">
-							<c:forEach items="${udListTO.userLists }" var="to">
+							<c:forEach items="${udListTO.userLists }" var="to" varStatus="vs">
 								<div class="row">
-									<a href="columnView.do">
-										<div class="col-md-3 col-xs-3">
-											<p>${to.uid}</p>
-										</div>
-										<div class="col-md-3 col-xs-3">
-											<p>Web Designer</p>
-										</div>
-										<div class="col-md-3 col-xs-3">
-											<a class="btn btn-common2">탈퇴</a>
-										</div>
-									</a>
+									<form action="" method="get">
+										<a href="">
+											<div class="col-md-3 col-xs-3">
+												<%-- 											
+												<input type="text" value="${to.uid }" name="userid" readonly="readonly">
+ --%>
+												<p name="${to.uid }" id="userid">${to.uid }</p>
+											</div>
+											<div class="col-md-3 col-xs-3">
+												<p>${to.uemail }</p>
+											</div>
+											<div class="col-md-3 col-xs-3">
+												<a name="${to.uid }"
+													class="btn btn-common2 userBtn">탈퇴</a>
+											</div>
+										</a>
+									</form>
 									<div class="checkbox col-md-3">
 										<label class="rememberme"> <input name="rememberme"
 											id="rememberme" value="forever" type="checkbox">
@@ -159,30 +185,43 @@
 
 					<div style="text-align: center; padding-top: 50px">
 						<ul class="pagination">
-							<c:if test="${udListTO.startBlock == 1 }">
-								<li class="active"><a href="#" class="btn btn-common"><i
-										class="ti-angle-left"></i> </a></li>
-							</c:if>
-							<c:forEach var="i" begin="${udListTO.startBlock}" end="${udListTOendBlock}"
-								step="1">
+
+							<c:choose>
+								<c:when test="${udListTO.cpage eq 1}">
+									<li class="active"><a href="#" class="btn btn-common"><i
+											class="ti-angle-left"></i> </a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="active"><a
+										href="userDelete.do?cpage=${udListTO.cpage-1}"
+										class="btn btn-common"><i class="ti-angle-left"></i> </a></li>
+								</c:otherwise>
+							</c:choose>
+							<c:forEach var="i" begin="${udListTO.startBlock}"
+								end="${udListTO.endBlock}" step="1">
 								<c:choose>
-									<c:when test="${udListTO.cpage == i}">
-										<button id="ju" name="${i}" onclick="p(this)"
-											class="btn btn-sm btn-outline-secondary w1">${i}</button>
+									<c:when test="${udListTO.cpage eq i}">
+										<li class="active"><a href="#">${i}</a></li>
 									</c:when>
 									<c:otherwise>
-									
+										<li><a href="userDelete.do?cpage=${i}">${i}</a></li>
 									</c:otherwise>
-
 								</c:choose>
 							</c:forEach>
 
 
-							<c:if test="${udListTO.endBlock == udListTO.totalPage }">
-								<li class="active"><a href="#" class="btn btn-common">
-										<i class="ti-angle-right"></i>
-								</a></li>
-							</c:if>
+							<c:choose>
+								<c:when test="${udListTO.cpage eq udListTO.totalPage}">
+									<li class="active"><a href="#" class="btn btn-common">
+											<i class="ti-angle-right"></i>
+									</a></li>
+								</c:when>
+								<c:otherwise>
+									<li class="active"><a
+										href="userDelete.do?cpage=${udListTO.cpage+1}"
+										class="btn btn-common"><i class="ti-angle-right"></i></a></li>
+								</c:otherwise>
+							</c:choose>
 
 						</ul>
 
@@ -216,6 +255,9 @@
 		</div>
 	</div>
 	<!-- Main JS  -->
+	<script type="text/javascript">
+		
+	</script>
 	<script type="text/javascript" src="./assets/js/jquery-min.js"></script>
 	<script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="./assets/js/material.min.js"></script>

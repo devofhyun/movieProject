@@ -58,6 +58,7 @@
 				alert('이름을 입력해주세요.');
 				return false;
 			}
+			
 			if ($('input[name=pwd]').val() == '') {
 				alert('비밀번호를 입력해주세요.');
 				
@@ -100,23 +101,23 @@
 						<form action="memberEdit_ok.do" method="post" class="form-ad">
 							<div class="form-group">
 								<label class="control-label">아이디</label> 
-								<input type="text" class="form-control" placeholder="${to.uid }" readonly="readonly" name="id" id="id">
+								<input type="text" class="form-control" value="${to.uid }" readonly="readonly" name="id" id="id">
 							</div>
 							<div class="form-group">
 								<label class="control-label">이메일 </label>
-								<input type="text" class="form-control" placeholder="${to.uemail }" readonly="readonly" name="email" id=>
+								<input type="text" class="form-control" value="${to.uemail }" readonly="readonly" name="email" id=>
 							</div>		
 							<div class="form-group">
 								<label class="control-label">이름</label> 
-								<input type="text" class="form-control" placeholder="${to.uname}" name="name" id="name">
+								<input type="text" class="form-control" value="${to.uname}" name="name" id="name">
 							</div>			
 							<div class="form-group">
 								<label class="control-label">생년월일 (선택)</label>
-								<input type="text" class="form-control" placeholder="${to.ubirth }" name="birth" id="birth">
+								<input type="text" class="form-control" value="${to.ubirth }" name="birth" id="birth">
 							</div>		
 							<div class="form-group">
 								<label class="control-label">전화번호 (선택)</label>
-								<input type="text" class="form-control" placeholder="${to.uphone }" name="phone" id="phone">
+								<input type="text" class="form-control" value="${to.uphone }" name="phone" id="phone">
 							</div>					
 							<hr/>						
 							<div class="form-group">

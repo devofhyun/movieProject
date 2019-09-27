@@ -57,6 +57,17 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 <title>후기게시판 상세페이지</title>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#btn-left1").on('click',function(){
+			var chk = confirm("정말 삭제하시겠습니까?");
+			if(chk){
+				location.href='latterDelete.do?rnum=${param.rnum}';
+			}
+		});
+	});
+</script>
 </head>
 
 
@@ -113,9 +124,13 @@
 					
 					<a href='latterModify.do?rnum=${param.rnum}&cpage=${param.cpage}' class="btn btn-common pull-right">수정</a> 
 					 </c:if>
-					 <c:if test="${sid eq lTO.uid }">
+					<%--  <c:if test="${sid eq lTO.uid }">
 					<a href="infoEdit.do?rnum=${param.rnum}&cpage=${param.cpage}" class="btn btn-common pull-right"
 						id="btn-left1">삭제</a>
+						</c:if> --%>
+						
+						 <c:if test="${sid eq lTO.uid }">
+					<button id="btn-left1" class="btn btn-common pull-right">삭제</button>
 						</c:if>
 				</div>
 			</div>
