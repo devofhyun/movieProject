@@ -11,16 +11,20 @@
 <script src='https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>
 <script type="text/javascript">
 	window.onload = function() {
-		<%
-		int flag = (Integer) request.getAttribute("flag");
-		if (flag == 0) {
-			out.println("swal('Hello world!');");
-	 		out.println("location.href='userDelete.do'");
-		} else if (flag == 1) {
-			out.println("alert('탈퇴실패')");
-			out.println("history.back()");
-		}
-	%>	
+<%int flag = (Integer) request.getAttribute("flag");
+			if (flag == 0) {
+				out.println("swal({");
+				out.println("title: '회원탈퇴 성공',");
+				out.println("icon: 'success',");
+				out.println("button: '확인',");
+				out.println("}).then(function(){");
+				out.println("window.location.href='userDelete.do';");
+				out.println("});");
+				//out.println("location.href='userDelete.do'");
+			} else if (flag == 1) {
+				out.println("alert('탈퇴실패')");
+				out.println("history.back()");
+			}%>
 	};
 </script>
 </head>

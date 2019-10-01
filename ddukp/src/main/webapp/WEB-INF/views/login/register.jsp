@@ -67,14 +67,44 @@
 					url:"sendMail.do",
 					data:"email=" + email,
 					success:function(code){
-						mailcode = code;
-						alert("인증코드가 메일에 전송되었습니다. \n확인하여 인증코드를 적어주시기 바랍니다.");
-						$("#email-code").show();
-				    	$("#send-email-code").attr("mailcheck", "done");
+						if(code == "0") {
+							alert("이미 가입된 이메일입니다. \n다른 이메일을 적어주시기 바랍니다.");
+						} else {
+							mailcode = code;
+							$("#email-code").show();
+					    	$("#send-email-code").attr("mailcheck", "done");
+						}
 						
 					},
 					error : function() {
 						alert("인증코드 전송에 실패하였습니다."); 
+					}
+				})
+			}
+		});
+		
+		/* 아이디 중복 확인 */
+		$("#id-check").on('click',function(){
+			var id = $('input[name=id]').val();
+			if (id == '') {
+				alert('아이디를 입력해주세요.');
+				return false;
+			} else {
+				$.ajax({
+					type :'get',
+					url:"checkId.do",
+					data:"id=" + id,
+					success:function(flag){
+						if(flag == 0) {
+							alert("사용할 수 있는 아이디입니다.");
+					    	$("#id-check").attr("check", "done");
+						} else if(flag == 1) {
+							alert("사용할 수 없는 아이디입니다. \n다른 아이디를 사용하여 주시기 바랍니다.");
+						}
+						
+					},
+					error : function() {
+						alert("아이디 중복 확인에 실패하였습니다."); 
 					}
 				})
 			}
@@ -95,6 +125,10 @@
 		$("#register").on('click',function(){
 			if ($('input[name=id]').val() == '') {
 				alert('아이디를 입력해주세요.');
+				return false;
+			}
+			if ($('#id-check').attr('check') == null) {
+				alert('아이디 중복 확인을 해주시기 바랍니다.');
 				return false;
 			}
 			if ($('input[name=name]').val() == '') {
@@ -173,8 +207,9 @@
 								<form action="register_ok.do" method="post" name="fw" class="login-form">
 									<div class="form-group">
 										<div class="input-icon">
-											<i class="ti-user"></i> <input type="text" id="id"
-												class="form-control" name="id" placeholder="아이디">
+											<i class="ti-user"></i> 
+											<input type="text" id="id" class="form-control" name="id" placeholder="아이디" style="width:68%; display:inline;">
+											<a class="btn btn-common1" id="id-check" style="width:30%; height:55px; padding-top:20px; margin-top:-2px; text-top:-10px;">확인</a>
 										</div>
 									</div>
 									<div class="form-group">

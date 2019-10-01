@@ -1,8 +1,5 @@
 package com.exam.action;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,36 +38,22 @@ public class UserEditAction implements Action {
 
 		UserDAO dao = new UserDAO();
 		int flag = 1;
-		String script = "";
 
 		flag = dao.LoginOk(to);
 		if (flag == 0) {
 			// 비밀번호 같음
 			flag = dao.userEdit(to);
 			if (flag == 0) {
-				// 계정 생성 성공 script
-				script = "<script>alert('나의 정보가 수정되었습니다.'); location.href='memberInfo.do';</script>";
-
+				// 계정 생성 성공
+				flag = 0;
 			} else {
-				// 계정 생성 실패 script
-				script = "<script>alert('나의 정보 수정에 실패하였습니다.'); history.go(-1);</script>";
+				// 계정 생성 실패 
+				flag = 1;
 			}
 		} else {
-			// 비밀번호 다름 script
-			script = "<script>alert('비밀번호가 다릅니다.'); history.go(-1);</script>";
+			// 비밀번호 다름 
+			flag = 2;
 		}
-
-		// alert
-		try {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println(script);
-			out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		request.setAttribute("flag", flag);
 	}
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,7 @@
 <title>고객센터</title>
 
 
-<!-- Bootstrap CSS --> 
+<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
 	type="text/css">
 <link rel="stylesheet" href="./assets/css/jasny-bootstrap.min.css"
@@ -54,7 +55,7 @@
 <body>
 	<!-- Header Section Start -->
 	<div class="header">
-		<%@include file="../nav2.jsp"%> 
+		<%@include file="../nav2.jsp"%>
 
 	</div>
 	<!-- Header Section End -->
@@ -199,53 +200,100 @@
 			<div class="job-alerts-item">
 				<div class="alerts-list">
 					<div class="row">
-						<div class="col-md-4 col-xs-3">
-							<p>글번호</p>
+						<div class="col-md-1 col-xs-1">
+							<p>번호</p>
 						</div>
-						<div class="col-md-4 col-xs-3">
+						<div class="col-md-2 col-xs-2">
+							<p>카테고리</p>
+						</div>
+						<div class="col-md-5 col-xs-5">
 							<p>제목</p>
 						</div>
-						<div class="col-md-4 col-xs-3">
+						<div class="col-md-2 col-xs-2">
 							<p>날짜</p>
+						</div>
+						<div class="col-md-2 col-xs-2">
+							<p>조회수</p>
 						</div>
 
 					</div>
 				</div>
-				<div class="alerts-content">
-					<div class="row">
-						<a href="customerCenterView.do">
+				<c:forEach items="${lLTO.customerList}" var="to">
+					<div class="alerts-content">
+						<div class="row">
+							
+							<a href="customerView.do?qnum=${to.qnum }&cpage=${lLTO.cpage}">
 
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
-							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
-							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>hongildong@email.com</p>
-							</div>
-						</a>
+								<div class="col-md-1 col-xs-1">
+									<p>${ to.qnum}</p>
+								</div>
+								<div class="col-md-2 col-xs-2">
+									<p>${to.qctgname}</p>
+								</div>
+								<div class="col-md-5 col-xs-5">
 
+									<p>
+										[${ to.qctgname}]&nbsp&nbsp${ to.qsubject}<img
+											src='./assets/img/board/mark_new2.gif' alt='HOT'
+											style="margin-bottom: 10px;">
+									</p>
+								</div>
+								
+								<div class="col-md-2 col-xs-2">
+									<p>${ to.qdate}</p>
+								</div>
+								<div class="col-md-2 col-xs-2">
+									<p>${to.qhit}</p>
+								</div>
+							</a>
+						</div>
 					</div>
-				</div>
-
+				</c:forEach>
 				<br>
 			</div>
-			<div class="col-md-12" style="padding:20px">
-				<a href="customerCenterWrite.do" class="btn btn-common pull-right">등록</a>
+			<div class="col-md-12" style="padding: 20px">
+				<c:if test="${!empty sid}">
+
+					<a href="customerWrite.do?cpage=${lLTO.cpage}" class="btn btn-common pull-right">쓰기</a>
+				</c:if>
 			</div>
-			<div style="text-align: center; padding-top:50px">
+			<div style="text-align: center; padding-top: 50px">
 				<ul class="pagination">
-					<li class="active"><a href="#" class="btn btn-common"><i
-							class="ti-angle-left"></i> </a></li> 
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li class="active"><a href="#" class="btn btn-common">
-							<i class="ti-angle-right"></i>
-					</a></li>
+					<c:choose>
+						<c:when test="${lLTO.cpage eq 1}">
+							<li class="active"><a href="#" class="btn btn-common"><i
+									class="ti-angle-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="active"><a
+								href="customerCenter.do?cpage=${lLTO.cpage-1}"
+								class="btn btn-common"><i class="ti-angle-left"></i> </a></li>
+						</c:otherwise>
+					</c:choose>
+					<c:forEach var="i" begin="${lLTO.startBlock}"
+						end="${lLTO.endBlock}" step="1">
+						<c:choose>
+							<c:when test="${lLTO.cpage eq i}">
+								<li class="active"><a href="#">${i}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="customerCenter.do?cpage=${i}">${i}</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+
+					<c:choose>
+						<c:when test="${lLTO.cpage eq lLTO.totalPage}">
+							<li class="active"><a href="#" class="btn btn-common"> <i
+									class="ti-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="active"><a
+								href="customerCenter.do?cpage=${lLTO.cpage+1}"
+								class="btn btn-common"><i class="ti-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 
 			</div>

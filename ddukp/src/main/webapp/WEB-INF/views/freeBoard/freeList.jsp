@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,9 +89,9 @@
 						<div class="col-md-3 col-xs-4">
 							<div class="search-category-container1">
 								<select class="dropdown-product selectpicker">
-										<option selected="selected">---</option>
-										<option>제목</option>
-										<option>내용</option>
+									<option selected="selected">---</option>
+									<option>제목</option>
+									<option>내용</option>
 								</select>
 							</div>
 						</div>
@@ -110,74 +112,104 @@
 			<div class="job-alerts-item">
 				<div class="alerts-list">
 					<div class="row">
-						<div class="col-md-4 col-xs-3">
-							<p>글번호</p>
+						<div class="col-md-1 col-xs-1">
+							<p>번호</p>
 						</div>
-						<div class="col-md-4 col-xs-3">
+						<div class="col-md-2 col-xs-2">
+							<p>카테고리</p>
+						</div>
+						<div class="col-md-5 col-xs-5">
 							<p>제목</p>
 						</div>
-						<div class="col-md-4 col-xs-3">
+
+						<div class="col-md-2 col-xs-2">
 							<p>날짜</p>
+						</div>
+						<div class="col-md-2 col-xs-2">
+							<p>조회수</p>
 						</div>
 
 					</div>
 				</div>
-				<div class="alerts-content">
-					<div class="row">
-						<a href="freeView.do">
+				<c:forEach items="${fLTO.freeList}" var="to">
+					<div class="alerts-content">
+						<div class="row">
+							<a href="freeView.do?fnum=${to.fnum}&cpage=${fLTO.cpage}">
+								
+								<div class="col-md-1 col-xs-1">
+									<p>${ to.fnum}</p>
+								</div>
+								<div class="col-md-2 col-xs-2">
+									<p>${to.fctgname}</p>
+								</div>
+								<div class="col-md-5 col-xs-5">
+									<p>
+										${to.fsubject}<img src='./assets/img/board/mark_new2.gif'
+											alt='HOT' style="margin-bottom: 10px;">
+									</p>
+								</div>
 
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
-							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
-							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>hongildong@email.com</p>
-							</div>
-						</a>
+								<div class="col-md-2 col-xs-2">
+									<p>${ to.fdate}</p>
+								</div>
+								<div class="col-md-2 col-xs-2">
+									<p>${ to.fhit}</p>
+								</div>
+							</a>
 
+						</div>
 					</div>
-				</div>
-				<div class="alerts-content">
-					<div class="row">
-						<a href="freeView.do">
-
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
-							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>Web Designer</p>
-							</div>
-							<div class="col-md-4 col-xs-3">
-								<p>hongildong@email.com</p>
-							</div>
-						</a>
-
-					</div>
-				</div>
+				</c:forEach>
 				<br>
 			</div>
 			<div class="col-md-12" style="padding: 20px">
-				<a href="freeWrite.do" class="btn btn-common pull-right">등록</a>
+			<c:if test="${!empty sid}">
+				<a href="freeWrite.do?cpage=${fLTO.cpage}" class="btn btn-common pull-right">쓰기</a>
+				</c:if>
 			</div>
 			<div style="text-align: center; padding-top: 50px">
 				<ul class="pagination">
-					<li class="active"><a href="#" class="btn btn-common"><i
-							class="ti-angle-left"></i> </a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li class="active"><a href="#" class="btn btn-common">
-							<i class="ti-angle-right"></i>
-					</a></li>
+					<c:choose>
+						<c:when test="${fLTO.cpage eq 1}">
+							<li class="active"><a href="#" class="btn btn-common"><i
+									class="ti-angle-left"></i> </a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="active"><a
+								href="freeList.do?cpage=${fLTO.cpage-1}"
+								class="btn btn-common"><i class="ti-angle-left"></i> </a></li>
+						</c:otherwise>
+					</c:choose>
+					<c:forEach var="i" begin="${fLTO.startBlock}"
+						end="${fLTO.endBlock}" step="1">
+						<c:choose>
+							<c:when test="${fLTO.cpage eq i}">
+								<li class="active"><a href="#">${i}</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="freeList.do?cpage=${i}">${i}</a></li>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+
+
+					<c:choose>
+						<c:when test="${fLTO.cpage eq fLTO.totalPage}">
+							<li class="active"><a href="#" class="btn btn-common"> <i
+									class="ti-angle-right"></i></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="active"><a
+								href="freeList.do?cpage=${fLTO.cpage+1}"
+								class="btn btn-common"><i class="ti-angle-right"></i></a></li>
+						</c:otherwise>
+					</c:choose>
+
 				</ul>
 
 			</div>
 		</div>
-		
+
 	</div>
 
 

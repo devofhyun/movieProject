@@ -52,23 +52,16 @@
 	href="./assets/css/colors/red.css" media="screen" />
 
 <script type="text/javascript">
-	/* function button_event(){
-	 if(confirm(document.getElementById("userBtn").getAttribute( 'name' ) + "탈퇴시키겠습니까?") == true ){
-	 location.href='userDelete_ok.do?userid=member12';
-	 }else{
-	 return;
-	 }
-	 } */
 	$(document).ready(function() {
-		$(".userBtn").on('click', function() {
-		if(confirm($(this).attr('name') + "탈퇴시키겠습니까?") == true){
-			location.href='userDelete_ok.do?userid='+$(this).attr('name');
-
-		}else{
-			return;
-		}
+		$(".userBtn").on('click',function() {
+			if (confirm($(this).attr('name')+ "탈퇴시키겠습니까?") == true) {
+				location.href = 'userDelete_ok.do?userid='+ $(this).attr('name');
+			} else {
+				return;
+			}
 		});
 	});
+	 
 </script>
 
 </head>
@@ -103,43 +96,43 @@
 				<div class="col-md-12 col-sm-12 col-xs-12">
 
 					<div class="content">
-						<form method="" action="">
-							<div class="row">
+						<div class="row">
+							<form method="get" action="userDelete.do">
+
 								<div class="col-md-2 col-xs-4">
 									<div class="search-category-container1">
-										<select class="dropdown-product selectpicker">
-											<option selected="selected">---------</option>
-											<option>아이디</option>
-											<option>이름</option>
+										<select class="dropdown-product selectpicker" name="opt">
+											<option value="none" selected="selected">---------</option>
+											<option value="0">아이디</option>
+											<option value="1">이메일</option>
 										</select>
 
 									</div>
 								</div>
 								<div class="col-md-4 col-xs-6">
 									<div class="form-group">
-										<input class="form-control" type="text"
-											placeholder="job title / keywords / company name">
+										<input class="form-control searchText" type="text"
+											name="searchText" id="searchText" placeholder="이름  / 이메일">
 									</div>
 								</div>
 								<div class="col-md-1 col-xs-1">
-									<button type="button" class="btn btn-search-icon">
-										<i class="ti-search"></i>
-									</button>
+									<input type="submit" class="searchBtn btn btn-search-icon"
+										value="검색">
 								</div>
-							</div>
-						</form>
+							</form>
+						</div>
 					</div>
 					<div class="job-alerts-item">
 						<div class="alerts-list">
 							<div class="row">
 								<div class="col-md-3 col-xs-3">
-									<p>글번호</p>
+									<p>아이디</p>
 								</div>
 								<div class="col-md-3 col-xs-3">
-									<p>제목</p>
+									<p>이메일</p>
 								</div>
 								<div class="col-md-3 col-xs-3">
-									<p>날짜</p>
+									<p>탈퇴</p>
 								</div>
 								<div class="col-md-3 col-xs-3">체크</div>
 							</div>
@@ -147,26 +140,22 @@
 						<div class="alerts-content">
 							<c:forEach items="${udListTO.userLists }" var="to" varStatus="vs">
 								<div class="row">
-									<form action="" method="get">
-										<a href="">
-											<div class="col-md-3 col-xs-3">
-												<%-- 											
+									<div class="col-md-3 col-xs-3">
+										<%-- 											
 												<input type="text" value="${to.uid }" name="userid" readonly="readonly">
  --%>
-												<p name="${to.uid }" id="userid">${to.uid }</p>
-											</div>
-											<div class="col-md-3 col-xs-3">
-												<p>${to.uemail }</p>
-											</div>
-											<div class="col-md-3 col-xs-3">
-												<a name="${to.uid }"
-													class="btn btn-common2 userBtn">탈퇴</a>
-											</div>
-										</a>
-									</form>
+										<p name="${to.uid }" id="userid">${to.uid }</p>
+									</div>
+									<div class="col-md-3 col-xs-3">
+										<p>${to.uemail }</p>
+									</div>
+									<div class="col-md-3 col-xs-3">
+										<a name="${to.uid }" class="btn btn-common2 userBtn">탈퇴</a>
+									</div>
 									<div class="checkbox col-md-3">
 										<label class="rememberme"> <input name="rememberme"
-											id="rememberme" value="forever" type="checkbox">
+											class="rememberme chkrememberme" id="chkrememberme"
+											value="${to.uid }" type="checkbox" data-uId="${to.uid}">
 										</label>
 									</div>
 
@@ -178,7 +167,8 @@
 						<br>
 					</div>
 					<div class="" style="padding: 20px">
-						<a href="userDelete.do" class="btn btn-common pull-right">삭제</a>
+						<button class="selectDelete_btn btn btn-common pull-right">모두
+							탈퇴</button>
 					</div>
 
 
@@ -192,11 +182,25 @@
 											class="ti-angle-left"></i> </a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="active"><a
-										href="userDelete.do?cpage=${udListTO.cpage-1}"
-										class="btn btn-common"><i class="ti-angle-left"></i> </a></li>
+
+									<c:choose>
+										<c:when test="${not empty udListTO.searchWord }">
+											<li class="active"><a
+												href="userDelete.do?cpage=${udListTO.cpage-1}&opt=${udListTO.searchKey}&searchText=${udListTO.searchWord}"
+												class="btn btn-common"><i class="ti-angle-left"></i></a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="active"><a
+												href="userDelete.do?cpage=${udListTO.cpage-1}"
+												class="btn btn-common"><i class="ti-angle-left"></i></a></li>
+
+										</c:otherwise>
+									</c:choose>
+
 								</c:otherwise>
 							</c:choose>
+
+
 							<c:forEach var="i" begin="${udListTO.startBlock}"
 								end="${udListTO.endBlock}" step="1">
 								<c:choose>
@@ -204,7 +208,18 @@
 										<li class="active"><a href="#">${i}</a></li>
 									</c:when>
 									<c:otherwise>
-										<li><a href="userDelete.do?cpage=${i}">${i}</a></li>
+										<c:choose>
+
+											<c:when test="${not empty udListTO.searchWord }">
+												<li><a
+													href="userDelete.do?cpage=${i}&opt=${udListTO.searchKey}&searchText=${udListTO.searchWord}">${i}</a></li>
+
+											</c:when>
+											<c:otherwise>
+												<li><a href="userDelete.do?cpage=${i}">${i}</a></li>
+
+											</c:otherwise>
+										</c:choose>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
@@ -217,9 +232,20 @@
 									</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="active"><a
-										href="userDelete.do?cpage=${udListTO.cpage+1}"
-										class="btn btn-common"><i class="ti-angle-right"></i></a></li>
+									<c:choose>
+										<c:when test="${not empty udListTO.searchWord }">
+											<li class="active"><a
+												href="userDelete.do?cpage=${udListTO.cpage+1}&opt=${udListTO.searchKey}&searchText=${udListTO.searchWord}"
+												class="btn btn-common"><i class="ti-angle-right"></i></a></li>
+										</c:when>
+										<c:otherwise>
+											<li class="active"><a
+												href="userDelete.do?cpage=${udListTO.cpage+1}"
+												class="btn btn-common"><i class="ti-angle-right"></i></a></li>
+
+										</c:otherwise>
+									</c:choose>
+
 								</c:otherwise>
 							</c:choose>
 
@@ -256,7 +282,40 @@
 	</div>
 	<!-- Main JS  -->
 	<script type="text/javascript">
-		
+		$(".selectDelete_btn").click(function() {
+			var confirm_val = confirm("정말 삭제하시겠습니까?");
+			var chkbox = $(".chkrememberme");
+			var send_cnt = 0;
+			var checkArr = new Array();
+			var test = "";
+
+			if (confirm_val) {
+
+				$("input:checkbox[name='rememberme']").each(function() {
+					if ($(this).is(":checked") == true) {
+						checkArr.push($(this).attr("data-uId"));
+					}
+
+				});
+				console.log(checkArr);
+				$.ajax({
+					url : "usersDelete_ok.do",
+					type : "post",
+					data : {
+						'chbox' : checkArr
+					},
+					dataType : 'json',
+					success : function(flag) {
+						alert("성공");
+						location.href = "userDelete.do"
+					},
+					error : function(request, status, error) {
+						alert("실패" + flag);
+					}
+
+				});
+			}
+		});
 	</script>
 	<script type="text/javascript" src="./assets/js/jquery-min.js"></script>
 	<script type="text/javascript" src="./assets/js/bootstrap.min.js"></script>

@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.exam.action.Action;
+import com.exam.action.CheckIdAction;
 import com.exam.action.FindIdAction;
 import com.exam.action.FindPwdAction;
 import com.exam.action.LoginAction;
 import com.exam.action.LoginOkAction;
 import com.exam.action.MemberDeleteOkAction;
+import com.exam.action.MemberWriteAction;
 import com.exam.action.SendMailAction;
 import com.exam.action.UserChangePwdAction;
 import com.exam.action.UserDeleteAction;
@@ -32,6 +34,7 @@ import com.exam.action.UserDeleteOkAction;
 import com.exam.action.UserEditAction;
 import com.exam.action.UserRegisterAction;
 import com.exam.action.UserViewAction;
+import com.exam.action.UsersDeleteOkAction;
 
 /**
  * Handles requests for the application home page.
@@ -95,11 +98,27 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/register_ok.do")
-	public void register_ok(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView register_ok(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
 		System.out.println("register_ok");
 		
 		userAction = new UserRegisterAction();
+		userAction.execute(request, response);	
+		
+		modelAndView.setViewName("./login/register_ok");
+		return modelAndView;
+	}
+	
+	@RequestMapping(value = "/checkId.do")
+	public @ResponseBody int checkID(HttpServletRequest request, HttpServletResponse response) {
+		
+		System.out.println("checkId");
+
+		userAction = new CheckIdAction();
 		userAction.execute(request, response);
+		int flag = (Integer)request.getAttribute("flag");
+		
+		return flag;
 	}
 	
 	@Autowired
@@ -133,6 +152,8 @@ public class UserController {
 		request.setAttribute("mailSender", mailSender);
 		userAction = new FindPwdAction();
 		userAction.execute(request, response);
+		
+		modelAndView.setViewName("./login/findPwd_ok");
 		return modelAndView;
 	}
 	
@@ -151,6 +172,8 @@ public class UserController {
 		request.setAttribute("mailSender", mailSender);
 		userAction = new FindIdAction();
 		userAction.execute(request, response);
+		
+		modelAndView.setViewName("./login/findId_ok");
 		return modelAndView;
 	}
 
@@ -179,7 +202,7 @@ public class UserController {
 		userAction.execute(request, response);
 		userAction = new UserViewAction();
 		userAction.execute(request, response);
-		modelAndView.setViewName("./mypage/memberInfo");
+		modelAndView.setViewName("./mypage/memberEdit_ok");
 		return modelAndView;
 	}
 
@@ -197,7 +220,6 @@ public class UserController {
 		ModelAndView modelAndView = new ModelAndView();
 		HttpSession session = request.getSession();
 
-		
 		userAction = new MemberDeleteOkAction();
 		userAction.execute(request, response);
 		modelAndView.setViewName("./mypage/memberDeleteOk");
@@ -207,6 +229,8 @@ public class UserController {
 	@RequestMapping(value = "/memberWrite.do")
 	public ModelAndView memberWrite(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
+		userAction = new MemberWriteAction();
+		userAction.execute(request, response);
 		modelAndView.setViewName("./mypage/memberWrite");
 		return modelAndView;
 	}
@@ -226,9 +250,11 @@ public class UserController {
 	@RequestMapping(value = "/changePwd_ok.do")
 	public ModelAndView changePwd_ok(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView modelAndView = new ModelAndView();
+		
 		userAction = new UserChangePwdAction();
 		userAction.execute(request, response);
-		modelAndView.setViewName("./mypage/changePwd");
+
+		modelAndView.setViewName("./mypage/changePwd_ok");
 		return modelAndView;
 	}
 	@RequestMapping(value = "/userDelete.do")
@@ -247,6 +273,14 @@ public class UserController {
 		modelAndView.setViewName("./admin/userDelete_ok");
 		return modelAndView;
 	}
+	@RequestMapping(value = "/usersDelete_ok.do")
+	public ModelAndView usersDelete_ok(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView modelAndView = new ModelAndView();
+		userAction = new UsersDeleteOkAction();
+		userAction.execute(request, response); 
+		modelAndView.setViewName("./admin/usersDelete_ok");
+		return modelAndView;
+	}	
 }
 
 

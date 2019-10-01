@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,16 +50,27 @@
 <!-- Responsive CSS Styles -->
 <link rel="stylesheet" href="./assets/css/responsive.css"
 	type="text/css">
+
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
-
 <!-- Color CSS Styles  -->
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
-<link rel="stylesheet" type="text/css"
-	href="./assets/css/lboard/fwrite.css" media="screen" />
 <title>후기게시판 상세페이지</title>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#btn-left1").on('click',function(){
+			var chk = confirm("정말 삭제하시겠습니까?");
+			if(chk){
+				location.href='columnDelete.do?cnum=${param.cnum}';
+			}
+		});
+	});
+</script>
 </head>
+
+
 <body>
 	<!-- Header Section Start -->
 	<div class="header">
@@ -90,20 +102,30 @@
 					<table class="table table-borderless table-sm">
 
 						<tr>
-							<th class="col-md-4" style="text-align: center;">[카테고리] <b>제목</b></th>
-							<th class="col-md-4">날짜</th>
-							<th class="col-md-4">조회수</th>
+							<th class="col-md-5" style="text-align: center;">[${cTO.msubject }]&nbsp&nbsp&nbsp <b>${cTO.csubject }</b></th>
+							<th class="col-md-3" style="text-align: right;">${cTO.cdate }</th>
+							<th class="col-md-2" style="text-align: right;">${cTO.chit }</th>
+							<th class="col-md-2" style="text-align: right;">댓글</th>
 						</tr>
 					</table>
 
-					<div>내용</div>
+					<div>${cTO.ccontent }</div>
 
 				</div>
 				<div class="col-md-12" style="padding-top: 30px">
-					<a href="columnList.do" class="btn btn-common pull-left">목록</a> <a
-						href="columnModify.do" class="btn btn-common pull-right">글 수정</a>
-					<a href="infoEdit.do" class="btn btn-common pull-right"
+					<a href="columnList.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a> 
+					<c:if test="${sid eq cTO.uid }">
+					
+					<a href='columnModify.do?cnum=${param.cnum}&cpage=${param.cpage}' class="btn btn-common pull-right">수정</a> 
+					 </c:if>
+					<%--  <c:if test="${sid eq lTO.uid }">
+					<a href="infoEdit.do?rnum=${param.rnum}&cpage=${param.cpage}" class="btn btn-common pull-right"
 						id="btn-left1">삭제</a>
+						</c:if> --%>
+						
+						 <c:if test="${sid eq cTO.uid }">
+					<button id="btn-left1" class="btn btn-common pull-right">삭제</button>
+						</c:if>
 				</div>
 			</div>
 
@@ -203,7 +225,6 @@
 
 		</div>
 	</div>
-
 	<%@include file="../footer.jsp"%>
 	<!-- Main JS  -->
 	<script type="text/javascript" src="./assets/js/jquery-min.js"></script>

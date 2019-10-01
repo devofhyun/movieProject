@@ -15,7 +15,9 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
-
+ <script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>  
+<script src="./resources/ckeditor/ckeditor.js"></script>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
 	type="text/css">
@@ -45,7 +47,7 @@
 <!-- Slicknav js -->
 <link rel="stylesheet" href="./assets/css/slicknav.css" type="text/css">
 <!-- Main Styles -->
-<link rel="stylesheet" href="./assets/css/main.css" type="text/css">
+<link rel="stylesheet" href="./assets/css/main2.css" type="text/css">
 <!-- Responsive CSS Styles -->
 <link rel="stylesheet" href="./assets/css/responsive.css"
 	type="text/css">
@@ -57,6 +59,36 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/lboard/fwrite.css" media="screen" />
 <title>후기게시판</title>
+	<script type="text/javascript">
+	
+	$(document).ready(function () {
+		
+		$("#fctgname option").each(function(){
+			if($(this).val()=="${fTO.fctgname}"){
+				$(this).attr("selected","selected");
+			}
+		})
+
+		$("#freewrite").on('click',function(){
+			if ($('#fctgname').val() == 'non') {
+				alert('카테고리를 선택해주세요.');
+				return false;
+			}
+			if ($('input[name=fsubject]').val() == '') {
+				alert('제목을 입력해주세요.');
+				return false;
+			}
+			var textarea=CKEDITOR.instances.feditor.getData();
+			 if (textarea.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "") == '') {
+				alert('내용을 입력해주세요.');
+				return false;
+			} 
+
+			
+		});
+	});
+
+	</script>
 </head>
 <body>
 	<div class="header">
@@ -85,37 +117,37 @@
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="" class="">
+					<form action="freeModifyOk.do" method="post" name="fw">
+					<input type="hidden" name="cpage" value="${param.cpage}" />
+					<input type="hidden" name="fnum" value="${param.fnum}" />
 						<div class="col-md-3 form-group is-empty">
-							<label for="moviegenre">카테고리</label> <select id="category"
+							<label for="moviegenre">카테고리</label> <select id="fctgname" name="fctgname"
 								class="form-control">
-								<option selected="selected">선택해주세요</option>
-								<option>일상</option>
-								<option>유머</option>
-								<option>이슈</option>
-								<option>연애</option>
-								<option>기타</option>
+								<option selected="selected" value="non">선택해주세요</option>
+								<option value="일상">일상</option>
+								<option value="유머">유머</option>
+								<option value="이슈">이슈</option>
+								<option value="연애">연애</option>
+								<option value="기타">기타</option>
 							</select>
 						</div>
 
 						<div class="col-md-9 form-group is-empty">
-							<label for="moviegenre">제목</label> <input type="text"
-								class="form-control" placeholder="제목">
+							<label for="moviegenre">제목</label> <input type="text" id="fsubject"  name="fsubject"
+								class="form-control" value="${fTO.fsubject}">
 						</div>
 						<div class="col-md-12 form-group">
 							<label for="moviegenre">내용</label>
 
-							<textarea name="leditor" id="leditor" rows="10" cols="10"
-								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
+							<textarea name="feditor" id="feditor" rows="10" cols="10"
+								class="form-control" style='width: 100%; min-width: 160px;'>${fTO.fcontent}</textarea>
 
 						</div>
-						<div class="col-md-12">
-							<input type="file" class="" id="">
-						</div>
-						<div class="col-md-12" style="padding-top:30px">
-							<a href="freeList.do" class="btn btn-common pull-left">취소</a>
-
-							<a href="freeList.do" class="btn btn-common pull-right">수정</a>
+		
+						<div class="col-md-12" style="padding-top: 30px">
+							<a href="freeList.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a>
+							<input type="submit" id="freewrite"  class="btn btn-common pull-right" value="수정" /> 
+						
 						</div>
 					</form>
 
@@ -144,16 +176,26 @@
 	<script type="text/javascript"src="./assets/js/jquery.themepunch.revolution.min.js"></script>
 	<script type="text/javascript"src="./assets/js/jquery.themepunch.tools.min.js"></script>
 </body>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var oEditors = [];
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef : oEditors,
-			elPlaceHolder : "leditor",
-			sSkinURI : "./editor/SmartEditor2Skin.html",
-			fCreator : "createSEditor2"
+			<script type="text/javascript">
+	 
+		CKEDITOR.replace('feditor', {
+			
+			filebrowserImageUploadUrl : 'fileupload.do'
 		});
-
-	});
-</script>
+		
+		 CKEDITOR.on('dialogDefinition', function( ev ){
+	            var dialogName = ev.data.name;
+	            var dialogDefinition = ev.data.definition;
+	          
+	            switch (dialogName) {
+	                case 'image': //Image Properties dialog
+	                    //dialogDefinition.removeContents('info');
+	                    dialogDefinition.removeContents('Link');
+	                    dialogDefinition.removeContents('advanced');
+	                    break;
+	            }
+	        });
+		
+		
+	</script>
 </html>

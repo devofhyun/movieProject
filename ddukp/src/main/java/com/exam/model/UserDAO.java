@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -64,6 +65,45 @@ public class UserDAO {
 		}
 		return flag;
 	}
+	
+	public int AdminLoginOk(AdminTO to) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int flag = 1;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select apwd from admin where aid = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, to.getAid());
+			
+			rs = pstmt.executeQuery();
+			
+			System.out.println("Dao아이디 : "+to.getAid());
+			
+			if(rs.next()) {
+				if(rs.getString("apwd").equals(to.getApwd())) {
+					// 회원
+					flag = 0;
+				}else {
+					flag = 2;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
+	}
+	
 	public int memberDeleteOk(UserTO to) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -134,40 +174,7 @@ public class UserDAO {
 		
 		return to;
 	}
-	
-	public UserTO userDelete(String id) {
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		UserTO to = new UserTO();
-		
-		try {
-			conn = dataSource.getConnection();
-			
-			String sql = "select uid, ubirth, upwd, uphone, uemail from member where uid = ? ";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs=pstmt.executeQuery();
-			
-			if(rs.next()) {
-				to.setUbirth(rs.getString("ubirth"));
-				to.setUemail(rs.getString("uemail"));
-				to.setUid(rs.getString("uid"));
-				to.setUphone(rs.getString("upwd"));
-				to.setUphone(rs.getString("uphone"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-			if(rs!=null)try {rs.close();}catch(SQLException e) {}
-			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
-			if(conn!=null)try {conn.close();}catch(SQLException e) {}
-		}
-		return to;
-		
-		
-	}
+
 	
 	public int userDeleteOk(String id) {
 		Connection conn = null;
@@ -199,7 +206,41 @@ public class UserDAO {
 		}
 		return flag;
 	}
-	
+	public int usersDeleteOk(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int flag = 2;
+
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "delete from member where uid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			System.out.println(id);
+			int result = pstmt.executeUpdate();
+			System.out.println("dao : " + flag);
+
+			if(result == 0) {
+				flag = 1;
+				System.out.println("dao1 : " + flag);
+
+			}else{
+				flag = 0;
+				System.out.println("dao1 : " + flag);
+
+			}
+			System.out.println("dao2 : " + flag);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
+	}	
 	public int userCount() {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -227,29 +268,53 @@ public class UserDAO {
 		return userCountAll;
 	}
 	
-	public UserDeleteListTO userDeleteList(UserDeleteListTO udListTO) {
+	public UserDeleteListTO userDeleteList(UserDeleteListTO listTO) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		ArrayList<UserTO> uList = new ArrayList<UserTO>();
 		
-		int cpage = udListTO.getCpage();
-		int recordPerPage = udListTO.getRecordPerPage();
-		int blockPerPage = udListTO.getBlockPerPage();
+		String opt = listTO.getSearchKey();
+		System.out.println("dao opt : " + opt);
+		String searchText = listTO.getSearchWord();
+		System.out.println("dao searchText : " + searchText);
+		
+		int cpage = listTO.getCpage();
+		int recordPerPage = listTO.getRecordPerPage();
+		int blockPerPage = listTO.getBlockPerPage();
 		
 		try {
 			conn = dataSource.getConnection();
 			
-			String sql = "select uid, udate, ubirth, uphone, uemail from member";
-			pstmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			rs = pstmt.executeQuery();
+			if(opt == null) {
+				String sql = "select uid, udate, ubirth, uphone, uemail from member";
+				pstmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				rs = pstmt.executeQuery();
+			
+			}else if(opt.equals("0")) {
+				String sql = "select uid, udate, ubirth, uphone, uemail from member where uid like ?";
+				pstmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				pstmt.setString(1, "%" + searchText + "%");
+				rs = pstmt.executeQuery();
+			}else if(opt.equals("1")) {
+				String sql = "select uid, udate, ubirth, uphone, uemail from member where uemail like ?";
+				pstmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				pstmt.setString(1, "%" + searchText + "%");
+				rs = pstmt.executeQuery();
+			}else if(opt.equals("none")) {
+				String sql = "select uid, udate, ubirth, uphone, uemail from member";
+				pstmt = conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+				rs = pstmt.executeQuery();
+			}
+			
+
 			
 			rs.last();
-			udListTO.setTotalRecord(rs.getRow());
+			listTO.setTotalRecord(rs.getRow());
 			rs.beforeFirst();
 			
-			udListTO.setTotalPage(((udListTO.getTotalRecord() - 1) / recordPerPage) + 1);
+			listTO.setTotalPage(((listTO.getTotalRecord() - 1) / recordPerPage) + 1);
 			int skip = (cpage - 1) * recordPerPage;
 			if(skip != 0)
 				rs.absolute(skip);
@@ -266,12 +331,12 @@ public class UserDAO {
 				
 			}
 			
-			udListTO.setUserLists(uList);
+			listTO.setUserLists(uList);
 			
-			udListTO.setStartBlock(((cpage - 1) / blockPerPage) * blockPerPage + 1);
-			udListTO.setEndBlock(((cpage - 1) / blockPerPage) * blockPerPage + blockPerPage);
-			if (udListTO.getEndBlock() >= udListTO.getTotalPage()) {
-				udListTO.setEndBlock(udListTO.getTotalPage());
+			listTO.setStartBlock(((cpage - 1) / blockPerPage) * blockPerPage + 1);
+			listTO.setEndBlock(((cpage - 1) / blockPerPage) * blockPerPage + blockPerPage);
+			if (listTO.getEndBlock() >= listTO.getTotalPage()) {
+				listTO.setEndBlock(listTO.getTotalPage());
 			}
 			
 			
@@ -283,7 +348,7 @@ public class UserDAO {
 			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
 			if(conn!=null)try {conn.close();}catch(SQLException e) {}
 		}
-		return udListTO;
+		return listTO;
 	}
 	
 	public int userRegister(UserTO to) {
@@ -451,6 +516,69 @@ public class UserDAO {
 			if(result > 0) {
 				flag = 0;
 			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
+	}
+
+	public int checkId(String id) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int flag = 0;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select count(*) from member where uid = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			System.out.println("id : " + id);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				flag = rs.getInt(1);
+			}
+			System.out.println("결과 쿼리 수 : " + flag);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(rs!=null)try {rs.close();}catch(SQLException e) {}
+			if(pstmt!=null)try {pstmt.close();}catch(SQLException e) {}
+			if(conn!=null)try {conn.close();}catch(SQLException e) {}
+		}
+		return flag;
+	}
+
+	public int checkEmail(String email) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		int flag = 1;
+		
+		try {
+			conn = dataSource.getConnection();
+			
+			String sql = "select count(*) from member where uemail = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, email);
+			
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				flag = rs.getInt(1);
+			}
+			System.out.println("결과 쿼리 수 : " + flag);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -134,6 +134,14 @@
 
 					</div>
 				</div>
+				<c:choose>
+				<c:when test="${empty lLTO.latterList }">
+									<div class="alerts-content" style="border : none; text-align:center">
+						<p>게시글이 없습니다.</p>
+
+					</div>
+				</c:when>
+				<c:otherwise>
 				<c:forEach items="${lLTO.latterList}" var="to">
 					<div class="alerts-content">
 						<div class="row">
@@ -151,7 +159,7 @@
 
 									<p>
 										[${ to.msubject}]&nbsp&nbsp${ to.rsubject}<img
-											src='./assets/img/board/icon_hot.gif' alt='HOT'
+											src='./assets/img/board/mark_new2.gif' alt='HOT'
 											style="margin-bottom: 10px;">
 									</p>
 								</div>
@@ -169,6 +177,9 @@
 						</div>
 					</div>
 				</c:forEach>
+				</c:otherwise>
+								</c:choose>
+				
 				<br>
 			</div>
 			<div class="col-md-12" style="padding: 20px">

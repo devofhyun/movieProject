@@ -1,8 +1,5 @@
 package com.exam.action;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,7 +21,6 @@ public class UserChangePwdAction implements Action {
 
 		UserDAO dao = new UserDAO();
 		int flag = dao.LoginOk(to);
-		String script = "";
 
 		if (flag == 0) {
 			// 로그인 성공 => 비밀번호 바꾸기 => 성공 alert
@@ -32,26 +28,17 @@ public class UserChangePwdAction implements Action {
 			flag = dao.userChangePwd(to);
 			if (flag == 0) {
 				// 비밀번호가 변경되었습니다.
-				script = "<script>alert('비밀번호가 변경되었습니다.'); location.href='changePwd.do';</script>";
+				flag = 0;
 			} else {
 				// 새 비밀번호 설정에 실패하였습니다.
-				script = "<script>alert('새 비밀번호 설정에 실패하였습니다.'); history.go(-1);</script>";
+				flag = 1;
 			}
 		} else {
-			// 로그인 실패 => 실패 alert
 			// 현재 비밀번호가 다릅니다.
-			script = "<script>alert('현재 비밀번호가 다릅니다.'); history.go(-1);</script>";
+			flag = 2;
 		}
-		// alert
-		try {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println(script);
-			out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		request.setAttribute("flag", flag);
 	}
 
 }

@@ -72,12 +72,6 @@
 
 
 <body>
-<c:set var="flag" value="${flag }"></c:set>
-	<c:if test="${flag ne null and flag == 0 }">
-	<script type="text/javascript">
-	alert('완료되었습니다.');
-	</script>
-	</c:if>
 	<!-- Header Section Start -->
 	<div class="header">
 		<%@include file="../nav2.jsp"%>
@@ -108,10 +102,10 @@
 					<table class="table table-borderless table-sm">
 
 						<tr>
-							<th class="col-md-4" style="text-align: center;">[${lTO.msubject }]&nbsp&nbsp&nbsp <b>${lTO.rsubject }</b></th>
-							<th class="col-md-3">${lTO.uid }</th>
-							<th class="col-md-3">${lTO.rdate }</th>
-							<th class="col-md-2">${lTO.rhit }</th>
+							<th class="col-md-5" style="text-align: center;">[${lTO.msubject }]&nbsp&nbsp&nbsp <b>${lTO.rsubject }</b></th>
+							<th class="col-md-3" style="text-align: right;">${lTO.rdate }</th>
+							<th class="col-md-2" style="text-align: right;">${lTO.rhit }</th>
+							<th class="col-md-2" style="text-align: right;">댓글</th>
 						</tr>
 					</table>
 

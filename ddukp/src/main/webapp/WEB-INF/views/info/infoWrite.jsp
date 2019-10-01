@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,11 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>공지사항 글 쓰기</title>
 
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>
+<script src="./resources/jquery-ui.js"></script> 
 
+<script src="./resources/ckeditor/ckeditor.js"></script>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
 	type="text/css">
@@ -49,7 +54,34 @@
 	href="./assets/css/colors/red.css" media="screen" />
 
 
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+				 		$("#freewrite").on('click',function() {
+											if ($('#ictgname').val() == 'non') {
+												alert('카테고리를 선택해주세요.');
+												return false;
+											}
 
+											if ($('input[name=isubject]').val() == '') {
+												alert('제목을 입력해주세요.');
+												return false;
+											}
+											var textarea = CKEDITOR.instances.ieditor
+													.getData();
+											if (textarea
+													.replace(
+															/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig,
+															"") == '') {
+												alert('내용을 입력해주세요.');
+												return false;
+											}
+
+										});
+					});
+			</script>
+				 		
 </head>
 <body>
 	<!-- Header Section Start -->
@@ -82,37 +114,32 @@
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="" class="">
+					<form action="infoWriteOk.do" method="post" name="fw">
 						<div class="col-md-3 form-group is-empty">
-							<label for="moviegenre">카테고리</label> <select id="category"
+							<label for="moviegenre">카테고리</label> <select id="ictgname" name="ictgname"
 								class="form-control">
-								<option selected="selected">선택해주세요</option>
-								<option>일상</option>
-								<option>유머</option>
-								<option>이슈</option>
-								<option>연애</option>
-								<option>기타</option>
+								<option selected="selected" value="non">선택해주세요</option>
+								<option value="서비스공지">서비스 공지</option>
+								<option value="콘텐츠공지">콘텐츠 공지</option>
 							</select>
 						</div>
 
 						<div class="col-md-9 form-group is-empty">
-							<label for="moviegenre">제목</label> <input type="text"
+							<label for="moviegenre">제목</label> <input type="text" id="isubject" name="isubject"
 								class="form-control" placeholder="제목">
 						</div>
 						<div class="col-md-12 form-group">
 							<label for="moviegenre">내용</label>
 
-							<textarea name="leditor" id="leditor" rows="10" cols="10"
+							<textarea name="ieditor" id="ieditor" rows="10" cols="10"
 								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
 
 						</div>
-						<div class="col-md-12">
-							<input type="file" class="" id="">
-						</div>
 						<div class="col-md-12" style="padding-top:30px">
-							<a href="infoBoard.do" class="btn btn-common pull-left">목록</a>
+							<a href="infoList.do?cpage=${param.cpage}"
+								class="btn btn-common pull-left">목록</a> <input type="submit"
+								id="freewrite" class="btn btn-common pull-right" value="등록" />
 
-							<a href="infoBoard.do" class="btn btn-common pull-right">등록</a>
 						</div>
 					</form>
 
@@ -165,6 +192,29 @@
 		src="./assets/js/jquery.themepunch.revolution.min.js"></script>
 	<script type="text/javascript"
 		src="./assets/js/jquery.themepunch.tools.min.js"></script>
-
+	<script  type="text/javascript" src="./resources/jquery-ui.js"></script> 
+		
+	<script type="text/javascript">
+	 
+		CKEDITOR.replace('ieditor', {
+			
+			filebrowserImageUploadUrl : 'fileupload.do'
+		});
+		
+		 CKEDITOR.on('dialogDefinition', function( ev ){
+	            var dialogName = ev.data.name;
+	            var dialogDefinition = ev.data.definition;
+	          
+	            switch (dialogName) {
+	                case 'image': //Image Properties dialog
+	                    //dialogDefinition.removeContents('info');
+	                    dialogDefinition.removeContents('Link');
+	                    dialogDefinition.removeContents('advanced');
+	                    break;
+	            }
+	        });
+		
+		
+	</script>
 </body>
 </html>

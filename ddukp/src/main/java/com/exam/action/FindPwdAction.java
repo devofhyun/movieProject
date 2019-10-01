@@ -1,18 +1,13 @@
 package com.exam.action;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.exam.model.UserDAO;
-import com.exam.model.UserDeleteListTO;
 import com.exam.model.UserTO;
 
 public class FindPwdAction implements Action {
@@ -31,7 +26,7 @@ public class FindPwdAction implements Action {
 		UserTO to = dao.findPwd(id, email);
 		String pwd = to.getUpwd();
 
-		String script = "";
+		int flag = 1;
 
 		System.out.println("임시 비밀번호 : " + pwd);
 		if (pwd != null) {
@@ -49,27 +44,18 @@ public class FindPwdAction implements Action {
 
 				mailSender.send(message);
 
-				// 임시 비밀번호 전송 후 script
-				script = "<script>alert('메일로 임시 비밀번호가 전송되었습니다.'); location.href='login.do';</script>";
-
+				// 임시 비밀번호 전송 후 
+				flag = 0;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
-			// 계정 조회 실패 script
-			script = "<script>alert('해당 메일과 아이디로 가입된 계정이 없습니다.'); history.go(-1);</script>";
+			// 계정 조회 실패 
+			flag = 1;
 		}
-		// alert
-		try {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println(script);
-			out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		request.setAttribute("flag", flag);
 	}
 
 }

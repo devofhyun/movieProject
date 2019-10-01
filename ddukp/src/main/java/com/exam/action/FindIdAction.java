@@ -1,14 +1,9 @@
 package com.exam.action;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -27,11 +22,11 @@ public class FindIdAction implements Action {
 		UserTO to = dao.findId(email);
 		String id = to.getUid();
 
-		String script = "";
+		int flag = 1;
 
 		if (id == null) {
-			// 아이디 조회 실패 script
-			script = "<script>alert('해당 메일로 가입된 계정이 없습니다.'); history.go(-1);</script>";
+			// 아이디 조회 실패
+			flag = 1;
 		} else {
 			System.out.println("id : " + id);
 			try {
@@ -49,25 +44,14 @@ public class FindIdAction implements Action {
 
 				mailSender.send(message);
 
-				// 아이디 조회 성공 script
-				script = "<script>alert('메일로 아이디 정보가 전송되었습니다.'); location.href='login.do';</script>";
-
+				// 아이디 조회 성공
+				flag = 0;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
-		// alert
-		try {
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println(script);
-			out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		request.setAttribute("flag", flag);
 	}
 
 }

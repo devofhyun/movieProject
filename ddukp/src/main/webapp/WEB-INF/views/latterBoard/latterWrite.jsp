@@ -10,8 +10,11 @@
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>후기게시판 글쓰기</title>
 
+
 <script src="./resources/jquery-3.4.1.js"></script>
 <script src="./resources/jquery-3.4.1.min.js"></script>
+<script src="./resources/jquery-ui.js"></script> 
+
 <script src="./resources/ckeditor/ckeditor.js"></script>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -50,55 +53,15 @@
 <!-- Color CSS Styles  -->
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
-
+<link rel="stylesheet" href="./assets/css/base/jquery-ui.css">
 
 <script type="text/javascript">
 	$(document)
 			.ready(
 					function() {
-						/* $("#bbb").on('click',function(){
-							alert('dd');
-						}) */
-						/* var mlist=["엑시트","스파이더맨","변산","조선명탐정","토이스토리"];
-						$("#msearch").autocomplete({
-							source:mlist,
-							select:function(event,ui){
-								console.log(ui.item);
-							},
-							focus:function(event,ui){
-								return false;
-							}
-						}) */
-						/* 		$("#bbb").on('click',function(){
-						 $.ajax({
-						 type : 'get',
-						 url:"movieList.do",
-						 dataType:"json",
-						 success:function(data){
-						 alert(data);
-						
-						 },
-						 error : function(
-						 request,
-						 status, error) {
-						
-						 alert("code:"
-						 + request.status
-						 + "\n"
-						 + "message:"
-						 + request.responseText
-						 + "\n"
-						 + "error:"
-						 + error); 
-						 }
-						 })
-						 }); */
-						$("#freewrite")
-								.on(
-										'click',
-										function() {
-											if ($('#rcategory').val() == 'non') {
-												alert('영화장르를 선택해주세요.');
+				 		$("#freewrite").on('click',function() {
+											if ($('#ctgname').val() == 'non') {
+												alert('카테고리를 선택해주세요.');
 												return false;
 											}
 											if ($('input[name=msubject]').val() == '') {
@@ -120,7 +83,46 @@
 											}
 
 										});
-						 
+			var availableCity = ["서울","부산","대구","광주","울산"];
+			$("#msubject").autocomplete({
+				source: function(request,response){
+					$.ajax({
+						
+						type:'post',
+						url:"movieList.do",
+						dataType:"json",
+						data:{value:request.term},
+						contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+						success:function(data){
+							response(
+								$.map(data,function(item){
+									return{
+										label:item.name,
+										value:item.name
+									}
+								})		
+							)
+						},
+						error: function(
+								request,
+								status, error) {
+							alert("code:"
+									+ request.status
+									+ "\n"
+									+ "message:"
+									+ request.responseText
+									+ "\n"
+									+ "error:"
+									+ error);
+						}
+					});
+				},
+				minLength: 1
+	
+
+
+			}); 
+
 
 					});
 </script>
@@ -170,7 +172,7 @@
 						</div>
 
 						<div class="col-md-9 form-group is-empty">
-							<label for="moviegenre">영화제목</label><i class="fa fa-search"
+							<label for="msubject">영화제목</label><i class="fa fa-search"
 								style="margin-top: 23px; margin-left: 15px;"></i> <input
 								type="text" class="form-control" placeholder="입력해주세요"
 								id="msubject" name="msubject">
@@ -187,24 +189,23 @@
 								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
 
 						</div>
-						<div class="col-md-12">
+					<!-- 	<div class="col-md-12">
 							<input type="file" class="" id="">
 						</div>
-
+ -->
 						<div class="col-md-12" style="padding-top: 30px">
-							<a href="freeList.do?cpage=${param.cpage}"
+							<a href="latterList.do?cpage=${param.cpage}"
 								class="btn btn-common pull-left">목록</a> <input type="submit"
 								id="freewrite" class="btn btn-common pull-right" value="등록" />
 
 						</div>
-						<button type="button"  id="bbb" class="btn btn-warning">하이</button>
 					</form>
-					
 				</div>
 			</div>
 
 		</div>
 	</div>
+
 	<%@include file="../footer.jsp"%>
 	<!-- Main JS  -->
 	<script type="text/javascript" src="./assets/js/jquery-min.js"></script>
@@ -227,6 +228,8 @@
 		src="./assets/js/jquery.themepunch.revolution.min.js"></script>
 	<script type="text/javascript"
 		src="./assets/js/jquery.themepunch.tools.min.js"></script>
+		<script  type="text/javascript" src="./resources/jquery-ui.js"></script> 
+		
 	<script type="text/javascript">
 	 
 		CKEDITOR.replace('leditor', {

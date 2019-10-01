@@ -58,6 +58,34 @@
 	href="./assets/css/colors/red.css" media="screen" />
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/lboard/fwrite.css" media="screen" />
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#freewrite")
+			.on(
+					'click',
+					function() {
+						if ($('#fctgname').val() == 'non') {
+							alert('카테고리를를 선택해주세요.');
+							return false;
+						}
+						if ($('input[name=fsubject]').val() == '') {
+							alert('제목을 입력해주세요.');
+							return false;
+						}
+						var textarea = CKEDITOR.instances.feditor
+								.getData();
+						if (textarea
+								.replace(
+										/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig,
+										"") == '') {
+							alert('내용을 입력해주세요.');
+							return false;
+						}
+
+					});
+		});
+	</script>
 <title>자유게시판 글쓰기</title>
 <script type="text/javascript">
 				
@@ -90,38 +118,35 @@
 		<div class="container">
 			<div class="">
 				<div class="">
-					<form action="write_ok.do" method="post" name="fw">
+					<form action="freeWriteOk.do" method="post" name="fw">
 						<div class="col-md-3 form-group is-empty">
-							<label for="moviegenre">카테고리</label> <select id="category"
+							<label for="moviegenre">카테고리</label> <select id="fctgname" name="fctgname"
 								class="form-control">
-								<option selected="selected">선택해주세요</option>
-								<option>일상</option>
-								<option>유머</option>
-								<option>이슈</option>
-								<option>연애</option>
-								<option>기타</option>
+								<option selected="selected"  value="non">선택해주세요</option>
+								<option value="일상">일상</option>
+								<option value="유머">유머</option>
+								<option value="이슈">이슈</option>
+								<option value="연애">연애</option>
+								<option value="기타">기타</option>
 							</select>
 						</div>
 
 						<div class="col-md-9 form-group is-empty">
 							<label for="moviegenre">제목</label> <input type="text"
-								class="form-control" placeholder="제목" id="subject">
+								class="form-control" placeholder="제목" id="fsubject" name="fsubject">
 						</div>
 						<div class="col-md-12 form-group">
 							<label for="moviegenre">내용</label>
 
-							<textarea name="leditor" id="leditor" rows="10" cols="10"
+							<textarea name="feditor" id="feditor" rows="10" cols="10"
 								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
-							<script type="text/javascript">
-								CKEDITOR.replace('leditor');
-							</script>
 						</div>
-						<div class="col-md-12">
+					<!-- 	<div class="col-md-12">
 							<input type="file" class="" id="">
-						</div>
+						</div> -->
 						<div class="col-md-12" style="padding-top: 30px">
-							<a href="freeList.do" class="btn btn-common pull-left">목록</a> <a
-								href="freeList.do" class="btn btn-common pull-right">등록</a>
+							<a href="freeList.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a>
+							<input type="submit" id="freewrite" class="btn btn-common pull-right" value="등록" />
 						</div>
 					</form>
 
@@ -153,17 +178,28 @@
 		src="./assets/js/jquery.themepunch.revolution.min.js"></script>
 	<script type="text/javascript"
 		src="./assets/js/jquery.themepunch.tools.min.js"></script>
-</body>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var oEditors = [];
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef : oEditors,
-			elPlaceHolder : "leditor",
-			sSkinURI : "./editor/SmartEditor2Skin.html",
-			fCreator : "createSEditor2"
+		<script type="text/javascript">
+	 
+		CKEDITOR.replace('feditor', {
+			
+			filebrowserImageUploadUrl : 'fileupload.do'
 		});
+		
+		 CKEDITOR.on('dialogDefinition', function( ev ){
+	            var dialogName = ev.data.name;
+	            var dialogDefinition = ev.data.definition;
+	          
+	            switch (dialogName) {
+	                case 'image': //Image Properties dialog
+	                    //dialogDefinition.removeContents('info');
+	                    dialogDefinition.removeContents('Link');
+	                    dialogDefinition.removeContents('advanced');
+	                    break;
+	            }
+	        });
+		
+		
+	</script>
+</body>
 
-	});
-</script>
 </html>

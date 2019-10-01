@@ -12,6 +12,25 @@ public class UserDeleteListTO {
 	private int startBlock;
 	private int endBlock;
 	
+	private String SearchKey;
+	private String SearchWord;
+	
+	public String getSearchKey() {
+		return SearchKey;
+	}
+
+	public void setSearchKey(String searchKey) {
+		SearchKey = searchKey;
+	}
+
+	public String getSearchWord() {
+		return SearchWord;
+	}
+
+	public void setSearchWord(String searchWord) {
+		SearchWord = searchWord;
+	}
+
 	private ArrayList<UserTO> userLists;
 	
 	private UserTO userTO;

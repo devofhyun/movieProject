@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+		<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,10 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
 <title>공지사항 상세페이지</title>
-
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
 
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
@@ -48,7 +52,16 @@
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
 
-
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#btn-left1").on('click',function(){
+			var chk = confirm("정말 삭제하시겠습니까?");
+			if(chk){
+				location.href='infoDelete.do?inum=${param.inum}';
+			}
+		});
+	});
+</script>
 
 </head>
 <body>
@@ -80,21 +93,27 @@
 					<table class="table table-borderless table-sm">
 
 						<tr>
-							<th class="col-md-4" style="text-align: center;">[카테고리] <b>제목</b></th>
-							<th class="col-md-4">날짜</th>
-							<th class="col-md-4">조회수</th>
+							<th class="col-md-5" style="text-align: center;">[${iTO.ictgname }]&nbsp&nbsp&nbsp <b>${iTO.isubject }</b></th>
+							<th class="col-md-3" style="text-align: right;">${iTO.idate }</th>
+							<th class="col-md-2" style="text-align: right;">${iTO.ihit }</th>
+							<th class="col-md-2" style="text-align: right;">댓글</th>
 						</tr>
 					</table>
 
-					<div>내용</div>
+					<div>${iTO.icontent }</div>
 
 				</div>
 				<div class="col-md-12" style="padding-top: 30px">
-					<a href="customerCenter.do" class="btn btn-common pull-left">목록</a>
+					<a href="infoBoard.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a> 
 
-					<a href="customerCenterEdit.do" class="btn btn-common pull-right">글
-						수정</a> <a href="infoEdit.do" class="btn btn-common pull-right"
-						id="btn-left1">삭제</a>
+					<c:if test="${sid eq iTO.aid}">
+					
+					<a href='infoModify.do?inum=${param.inum}&cpage=${param.cpage}' class="btn btn-common pull-right">수정</a> 
+					 </c:if>
+						
+							 <c:if test="${sid eq  iTO.aid}">
+					<button id="btn-left1" class="btn btn-common pull-right">삭제</button>
+						</c:if>
 				</div>
 			</div>
 

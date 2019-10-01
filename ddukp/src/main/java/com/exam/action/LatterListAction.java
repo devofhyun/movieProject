@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.exam.model.BoardDAO;
-import com.exam.model.latterBoardListTO;
+import com.exam.model.BoardListTO;
 
 public class LatterListAction implements Action {
 
@@ -16,7 +16,7 @@ public class LatterListAction implements Action {
 			cpage = Integer.parseInt(request.getParameter("cpage"));
 		}
 		
-		latterBoardListTO lLTO=new latterBoardListTO();
+		BoardListTO lLTO=new BoardListTO();
 		System.out.println("cpge="+cpage);
 		lLTO.setCpage(cpage);
 		

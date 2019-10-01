@@ -137,7 +137,7 @@ public class BoardDAO {
 		return rnum;
 	}
 
-	public latterBoardListTO latterList(latterBoardListTO lLTO) {
+	public BoardListTO latterList(BoardListTO lLTO) {
 		Connection conn = null;
 		PreparedStatement pstmt1 = null;
 		PreparedStatement pstmt2 = null;

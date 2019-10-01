@@ -1,15 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
-<title>후기게시판 글쓰기</title>
+<title>컬럼게시판 글쓰기</title>
 
-
+<script src="./resources/jquery-3.4.1.js"></script>
+<script src="./resources/jquery-3.4.1.min.js"></script>
+<script src="./resources/ckeditor/ckeditor.js"></script>
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="./assets/css/bootstrap.min.css"
 	type="text/css">
@@ -47,10 +50,87 @@
 <!-- Color CSS Styles  -->
 <link rel="stylesheet" type="text/css"
 	href="./assets/css/colors/red.css" media="screen" />
-<link rel="stylesheet" type="text/css"
-	href="./assets/css/lboard/lwrite.css" media="screen" />
+
+
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+			
+						$("#freewrite")
+								.on(
+										'click',
+										function() {
+											if ($('input[name=msubject]').val() == '') {
+												alert('영화제목을 입력해주세요.');
+												return false;
+											}
+											if ($('input[name=csubject]').val() == '') {
+												alert('제목을 입력해주세요.');
+												return false;
+											}
+											var textarea = CKEDITOR.instances.ceditor
+													.getData();
+											if (textarea
+													.replace(
+															/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig,
+															"") == '') {
+												alert('내용을 입력해주세요.');
+												return false;
+											}
+
+										});
+						
+						$("#msubject").autocomplete({
+							source: function(request,response){
+								$.ajax({
+									
+									type:'post',
+									url:"movieList.do",
+									dataType:"json",
+									data:{value:request.term},
+									contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+									success:function(data){
+										response(
+											$.map(data,function(item){
+												return{
+													label:item.name,
+													value:item.name
+												}
+											})		
+										)
+									},
+									error: function(
+											request,
+											status, error) {
+										alert("code:"
+												+ request.status
+												+ "\n"
+												+ "message:"
+												+ request.responseText
+												+ "\n"
+												+ "error:"
+												+ error);
+									}
+								});
+							},
+							minLength: 1
+				
+
+
+						});
+						 
+
+					});
+</script>
 </head>
 <body>
+	<c:set var="flag" value="${flag }"></c:set>
+	<c:if test="${flag ne null and flag == 1 }">
+		<script type="text/javascript">
+			alert('오류가 발생했습니다. 다시 입력해주세요.');
+		</script>
+	</c:if>
 	<!-- Header Section Start -->
 	<div class="header">
 		<%@include file="../nav2.jsp"%>
@@ -73,73 +153,43 @@
 		</div>
 	</div>
 
+
 	<div id="content">
 		<div class="container">
-			<div class="row">
-				<div class="col-md-9 col-md-offset-2">
-					<div class="page-ads box">
-						<form action="" class="form-ad">
+			<div class="">
+				<div class="">
+					<form action="columnWriteOk.do" method="post" name="fw">
+		
 
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="moviegenre">장르</label> <select id="genre"
-											class="form-control">
-											<option selected="selected">선택해주세요</option>
-											<option>액션</option>
-											<option>로맨스</option>
-											<option>공포/스릴러</option>
-											<option>코미디</option>
-											<option>판타지</option>
-											<option>SF</option>
-										</select>
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="moviegenre">영화제목</label> <i class="fa fa-search"
-											style="margin-top: 23px;"></i><input class="form-control" type="email"
-											placeholder="입력해주세요" id="msearch" />
-									</div>
-								</div>
-							</div>
-						<!-- 	<div class="form-group is-empty">
-								<div class="row">
-									<div class="col-md-6 ">
-										<label for="moviegenre">닉네임</label> <input type="text"
-											class="form-control" placeholder="닉네임">
-									</div>
-									<div class="col-md-6">
-										<label for="moviegenre">비밀번호</label> <input type="password"
-											class="form-control" placeholder="비밀번호">
-									</div>
-								</div>
-							</div> -->
+						<div class="col-md-12 form-group is-empty">
+							<label for="moviegenre">영화제목</label><i class="fa fa-search"
+								style="margin-top: 23px; margin-left: 15px;"></i> <input
+								type="text" class="form-control" placeholder="입력해주세요"
+								id="msubject" name="msubject">
+						</div>
+						<div class="col-md-12 form-group">
+							<label for="moviegenre">제목</label> <input type="text"
+								class="form-control" placeholder="제목" id="csubject"
+								name="csubject">
+						</div>
+						<div class="col-md-12 form-group">
+							<label for="moviegenre">내용</label>
 
-							<div class="form-group is-empty">
-								<label for="moviegenre">제목</label> <input type="text"
-									class="form-control" placeholder="제목">
-							</div>
-							<div class="form-group">
-								<label for="moviegenre">내용</label>
+							<textarea name="ceditor" id="ceditor" rows="10" cols="10"
+								class="form-control" style='width: 100%; min-width: 160px;'></textarea>
 
-								<textarea name="leditor" id="leditor" rows="10" cols="10"
-									class="form-control" style='width: 100%; min-width: 160px;'></textarea>
+						</div>
+						<div class="col-md-12" style="padding-top: 30px">
+							<a href="columnList.do?cpage=${param.cpage}"
+								class="btn btn-common pull-left">목록</a> <input type="submit"
+								id="freewrite" class="btn btn-common pull-right" value="등록" />
 
-							</div>
-							<div class="form-group">
-								<label for="moviegenre">파일첨부</label> <input type="file"
-									class="form-control" id="exampleFormControlFile1">
-
-							</div>
-						</form>
-
-					</div>
-					<span id="lwrite"><input type="submit" value="등록"
-						class="btn btn-primary "></span>
-						 <span><button type="button"class="btn btn-primary" onclick="location.href='columnList.do'">취소</button></span>
+						</div>
+					</form>
+					
 				</div>
 			</div>
+
 		</div>
 	</div>
 	<%@include file="../footer.jsp"%>
@@ -152,25 +202,40 @@
 	<script type="text/javascript" src="./assets/js/owl.carousel.min.js"></script>
 	<script type="text/javascript" src="./assets/js/jquery.slicknav.js"></script>
 	<script type="text/javascript" src="./assets/js/main.js"></script>
-	<script type="text/javascript"src="./assets/js/jquery.counterup.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/jquery.counterup.min.js"></script>
 	<script type="text/javascript" src="./assets/js/waypoints.min.js"></script>
 	<script type="text/javascript" src="./assets/js/jasny-bootstrap.min.js"></script>
-	<script type="text/javascript"src="./assets/js/bootstrap-select.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="./assets/js/form-validator.min.js"></script>
 	<script type="text/javascript" src="./assets/js/contact-form-script.js"></script>
-	<script type="text/javascript"src="./assets/js/jquery.themepunch.revolution.min.js"></script>
-	<script type="text/javascript"src="./assets/js/jquery.themepunch.tools.min.js"></script>
-</body>
-<script type="text/javascript">
-	$(document).ready(function() {
-		var oEditors = [];
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef : oEditors,
-			elPlaceHolder : "leditor",
-			sSkinURI : "./editor/SmartEditor2Skin.html",
-			fCreator : "createSEditor2"
+	<script type="text/javascript"
+		src="./assets/js/jquery.themepunch.revolution.min.js"></script>
+	<script type="text/javascript"
+		src="./assets/js/jquery.themepunch.tools.min.js"></script>
+	<script type="text/javascript">
+	 
+		CKEDITOR.replace('ceditor', {
+			
+			filebrowserImageUploadUrl : 'fileupload.do'
 		});
+		
+		 CKEDITOR.on('dialogDefinition', function( ev ){
+	            var dialogName = ev.data.name;
+	            var dialogDefinition = ev.data.definition;
+	          
+	            switch (dialogName) {
+	                case 'image': //Image Properties dialog
+	                    //dialogDefinition.removeContents('info');
+	                    dialogDefinition.removeContents('Link');
+	                    dialogDefinition.removeContents('advanced');
+	                    break;
+	            }
+	        });
+		
+		
+	</script>
+</body>
 
-	});
-</script>
 </html>

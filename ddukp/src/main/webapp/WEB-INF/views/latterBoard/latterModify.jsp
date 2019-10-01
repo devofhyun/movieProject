@@ -63,7 +63,7 @@
 		})
 
 		$("#freewrite").on('click',function(){
-			if ($('#rcategory').val() == 'non') {
+			if ($('#ctgname').val() == 'non') {
 				alert('카테고리를 선택해주세요.');
 				return false;
 			}
@@ -150,9 +150,7 @@
 								class="form-control" style='width: 100%; min-width: 160px;'>${lTO.rcontent}</textarea>
 					
 						</div>
-						<div class="col-md-12">
-							<input type="file" class="" id="">
-						</div>
+	
 						
 						<div class="col-md-12" style="padding-top: 30px">
 							<a href="latterList.do?cpage=${param.cpage}" class="btn btn-common pull-left">목록</a>

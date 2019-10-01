@@ -1,8 +1,5 @@
 package com.exam.action;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,26 +29,14 @@ public class UserRegisterAction implements Action {
 		
 		System.out.println("userRegister flag: " + flag);
 
-		String script = "";
 		if (flag == 0) {
-			// 계정 생성 성공 script
-			script = "<script>alert('회원가입 되셨습니다.'); location.href='login.do';</script>";
-
+			// 계정 생성 성공 
+			flag = 0;
 		} else {
-			// 계정 생성 실패 script
-			script = "<script>alert('회원가입에 실패하셨습니다.'); history.go(-1);</script>";
+			// 계정 생성 실패 
+			flag = 1;
 		}
 		
-		try {
-			// alert
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println(script);
-			out.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		request.setAttribute("flag", flag);
 	}
 
